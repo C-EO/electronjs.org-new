@@ -290,6 +290,14 @@ module.exports = {
         'latest/api/structures/user-default-types',
         'latest/api/structures/web-source',
       ],
-    }
+    },
+    {
+      type: 'category',
+      label: 'Api',
+      items: [
+        'latest/api/safe-storage',
+        'latest/api/structures/web-request-filter',
+      ],
+    },
   ],
 };
