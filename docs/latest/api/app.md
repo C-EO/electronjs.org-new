@@ -9,7 +9,7 @@ hide_title: false
 
 > Control your application's event lifecycle.
 
-Process: [Main](latest/glossary.md#main-process)
+Process: [Main](../glossary.md#main-process)
 
 The following example shows how to quit the application when the last window is
 closed:
@@ -39,7 +39,7 @@ In most cases, you should do everything in the `ready` event handler.
 Returns:
 
 * `event` Event
-* `launchInfo` Record&#60;string, any&#62; | [NotificationResponse](latest/api/structures/notification-response.md) _macOS_
+* `launchInfo` Record\<string, any\> | [NotificationResponse](structures/notification-response.md) _macOS_
 
 Emitted once, when Electron has finished initializing. On macOS, `launchInfo`
 holds the `userInfo` of the [`NSUserNotification`](https://developer.apple.com/documentation/foundation/nsusernotification)
@@ -47,6 +47,10 @@ or information from [`UNNotificationResponse`](https://developer.apple.com/docum
 that was used to open the application, if it was launched from Notification Center.
 You can also call `app.isReady()` to check if this event has already fired and `app.whenReady()`
 to get a Promise that is fulfilled when Electron is initialized.
+
+**Note**: The `ready` event is only fired after the main process has finished running the first
+tick of the event loop. If an Electron API needs to be called before the `ready` event, ensure
+that it is called synchronously in the top-level context of the main process.
 
 ### Event: 'window-all-closed'
 
@@ -254,46 +258,46 @@ tab button is only visible if the current `BrowserWindow` has a
 Returns:
 
 * `event` Event
-* `window` [BrowserWindow](latest/api/browser-window.md)
+* `window` [BrowserWindow](browser-window.md)
 
-Emitted when a [browserWindow](latest/api/browser-window.md) gets blurred.
+Emitted when a [browserWindow](browser-window.md) gets blurred.
 
 ### Event: 'browser-window-focus'
 
 Returns:
 
 * `event` Event
-* `window` [BrowserWindow](latest/api/browser-window.md)
+* `window` [BrowserWindow](browser-window.md)
 
-Emitted when a [browserWindow](latest/api/browser-window.md) gets focused.
+Emitted when a [browserWindow](browser-window.md) gets focused.
 
 ### Event: 'browser-window-created'
 
 Returns:
 
 * `event` Event
-* `window` [BrowserWindow](latest/api/browser-window.md)
+* `window` [BrowserWindow](browser-window.md)
 
-Emitted when a new [browserWindow](latest/api/browser-window.md) is created.
+Emitted when a new [browserWindow](browser-window.md) is created.
 
 ### Event: 'web-contents-created'
 
 Returns:
 
 * `event` Event
-* `webContents` [WebContents](latest/api/web-contents.md)
+* `webContents` [WebContents](web-contents.md)
 
-Emitted when a new [webContents](latest/api/web-contents.md) is created.
+Emitted when a new [webContents](web-contents.md) is created.
 
 ### Event: 'certificate-error'
 
 Returns:
 
 * `event` Event
-* `webContents` [WebContents](latest/api/web-contents.md)
+* `webContents` [WebContents](web-contents.md)
 * `url` string
 * `error` string - The error code
-* `certificate` [Certificate](latest/api/structures/certificate.md)
+* `certificate` [Certificate](structures/certificate.md)
 * `callback` Function
   * `isTrusted` boolean - Whether to consider the certificate as trusted
 * `isMainFrame` boolean
@@ -321,11 +325,11 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
 Returns:
 
 * `event` Event
-* `webContents` [WebContents](latest/api/web-contents.md)
+* `webContents` [WebContents](web-contents.md)
 * `url` URL
-* `certificateList` [Certificate[]](latest/api/structures/certificate.md)
+* `certificateList` [Certificate[]](structures/certificate.md)
 * `callback` Function
-  * `certificate` [Certificate](latest/api/structures/certificate.md) (optional)
+  * `certificate` [Certificate](structures/certificate.md) (optional)
 
 Emitted when a client certificate is requested.
 
@@ -348,9 +352,10 @@ app.on('select-client-certificate', (event, webContents, url, list, callback) =>
 Returns:
 
 * `event` Event
-* `webContents` [WebContents](latest/api/web-contents.md)
+* `webContents` [WebContents](web-contents.md) (optional)
 * `authenticationResponseDetails` Object
   * `url` URL
+  * `pid` number
 * `authInfo` Object
   * `isProxy` boolean
   * `scheme` string
@@ -361,7 +366,7 @@ Returns:
   * `username` string (optional)
   * `password` string (optional)
 
-Emitted when `webContents` wants to do basic auth.
+Emitted when `webContents` or [Utility process](../glossary.md#utility-process) wants to do basic auth.
 
 The default behavior is to cancel all authentications. To override this you
 should prevent the default behavior with `event.preventDefault()` and call
@@ -389,8 +394,8 @@ Emitted whenever there is a GPU info update.
 Returns:
 
 * `event` Event
-* `webContents` [WebContents](latest/api/web-contents.md)
-* `details` [RenderProcessGoneDetails](latest/api/structures/render-process-gone-details.md)
+* `webContents` [WebContents](web-contents.md)
+* `details` [RenderProcessGoneDetails](structures/render-process-gone-details.md)
 
 Emitted when the renderer process unexpectedly disappears.  This is normally
 because it was crashed or killed.
@@ -418,7 +423,7 @@ Returns:
     * `launch-failed` - Process never successfully launched
     * `integrity-failure` - Windows code integrity checks failed
   * `exitCode` number - The exit code for the process
-      (e.g. status from waitpid if on posix, from GetExitCodeProcess on Windows).
+      (e.g. status from waitpid if on POSIX, from GetExitCodeProcess on Windows).
   * `serviceName` string (optional) - The non-localized name of the process.
   * `name` string (optional) - The name of the process.
     Examples for utility: `Audio Service`, `Content Decryption Module Service`, `Network Service`, `Video Capture`, etc.
@@ -443,7 +448,7 @@ details.
 
 Returns:
 
-* `session` [Session](latest/api/session.md)
+* `session` [Session](session.md)
 
 Emitted when Electron has created a new `session`.
 
@@ -516,20 +521,20 @@ and `will-quit` events will not be emitted.
   * `args` string[] (optional)
   * `execPath` string (optional)
 
-Relaunches the app when current instance exits.
+Relaunches the app when the current instance exits.
 
 By default, the new instance will use the same working directory and command line
-arguments with current instance. When `args` is specified, the `args` will be
-passed as command line arguments instead. When `execPath` is specified, the
-`execPath` will be executed for relaunch instead of current app.
+arguments as the current instance. When `args` is specified, the `args` will be
+passed as the command line arguments instead. When `execPath` is specified, the
+`execPath` will be executed for the relaunch instead of the current app.
 
-Note that this method does not quit the app when executed, you have to call
+Note that this method does not quit the app when executed. You have to call
 `app.quit` or `app.exit` after calling `app.relaunch` to make the app restart.
 
-When `app.relaunch` is called for multiple times, multiple instances will be
-started after current instance exited.
+When `app.relaunch` is called multiple times, multiple instances will be
+started after the current instance exits.
 
-An example of restarting current instance immediately and adding a new command
+An example of restarting the current instance immediately and adding a new command
 line argument to the new instance:
 
 ```js
@@ -633,7 +638,7 @@ If `app.getPath('logs')` is called without called `app.setAppLogsPath()` being c
     * `normal` - 32x32
     * `large` - 48x48 on _Linux_, 32x32 on _Windows_, unsupported on _macOS_.
 
-Returns `Promise<NativeImage>` - fulfilled with the app's icon, which is a [NativeImage](latest/api/native-image.md).
+Returns `Promise<NativeImage>` - fulfilled with the app's icon, which is a [NativeImage](native-image.md).
 
 Fetches a path's associated icon.
 
@@ -688,7 +693,7 @@ Overrides the current application's name.
 Returns `string` - The current application locale, fetched using Chromium's `l10n_util` library.
 Possible return values are documented [here](https://source.chromium.org/chromium/chromium/src/+/main:ui/base/l10n/l10n_util.cc).
 
-To set the locale, you'll want to use a command line switch at app startup, which may be found [here](latest/api/command-line-switches.md).
+To set the locale, you'll want to use a command line switch at app startup, which may be found [here](command-line-switches.md).
 
 **Note:** When distributing your packaged app, you have to also ship the
 `locales` folder.
@@ -844,7 +849,7 @@ This method returns the application name of the default handler for the protocol
 Returns `Promise<Object>` - Resolve with an object containing the following:
 
 * `icon` NativeImage - the display icon of the app handling the protocol.
-* `path` string - installation path of the app handling the protocol.
+* `path` string  - installation path of the app handling the protocol.
 * `name` string - display name of the app handling the protocol.
 
 This method returns a promise that contains the application name, icon and path of the default handler for the protocol
@@ -852,11 +857,11 @@ This method returns a promise that contains the application name, icon and path 
 
 ### `app.setUserTasks(tasks)` _Windows_
 
-* `tasks` [Task[]](latest/api/structures/task.md) - Array of `Task` objects
+* `tasks` [Task[]](structures/task.md) - Array of `Task` objects
 
 Adds `tasks` to the [Tasks][tasks] category of the Jump List on Windows.
 
-`tasks` is an array of [`Task`](latest/api/structures/task.md) objects.
+`tasks` is an array of [`Task`](structures/task.md) objects.
 
 Returns `boolean` - Whether the call succeeded.
 
@@ -870,7 +875,7 @@ Returns `Object`:
 * `minItems` Integer - The minimum number of items that will be shown in the
   Jump List (for a more detailed description of this value see the
   [MSDN docs][JumpListBeginListMSDN]).
-* `removedItems` [JumpListItem[]](latest/api/structures/jump-list-item.md) - Array of `JumpListItem`
+* `removedItems` [JumpListItem[]](structures/jump-list-item.md) - Array of `JumpListItem`
   objects that correspond to items that the user has explicitly removed from custom categories in the
   Jump List. These items must not be re-added to the Jump List in the **next**
   call to `app.setJumpList()`, Windows will not display any custom category
@@ -878,7 +883,7 @@ Returns `Object`:
 
 ### `app.setJumpList(categories)` _Windows_
 
-* `categories` [JumpListCategory[]](latest/api/structures/jump-list-category.md) | `null` - Array of `JumpListCategory` objects.
+* `categories` [JumpListCategory[]](structures/jump-list-category.md) | `null` - Array of `JumpListCategory` objects.
 
 Returns `string`
 
@@ -977,7 +982,7 @@ app.setJumpList([
 
 ### `app.requestSingleInstanceLock([additionalData])`
 
-* `additionalData` Record&#60;any, any&#62; (optional) - A JSON object containing additional data to send to the first instance.
+* `additionalData` Record\<any, any\> (optional) - A JSON object containing additional data to send to the first instance.
 
 Returns `boolean`
 
@@ -1179,11 +1184,11 @@ This method can only be called before app is ready.
 
 ### `app.getAppMetrics()`
 
-Returns [`ProcessMetric[]`](latest/api/structures/process-metric.md): Array of `ProcessMetric` objects that correspond to memory and CPU usage statistics of all the processes associated with the app.
+Returns [`ProcessMetric[]`](structures/process-metric.md): Array of `ProcessMetric` objects that correspond to memory and CPU usage statistics of all the processes associated with the app.
 
 ### `app.getGPUFeatureStatus()`
 
-Returns [`GPUFeatureStatus`](latest/api/structures/gpu-feature-status.md) - The Graphics Feature Status from `chrome://gpu/`.
+Returns [`GPUFeatureStatus`](structures/gpu-feature-status.md) - The Graphics Feature Status from `chrome://gpu/`.
 
 **Note:** This information is only usable after the `gpu-info-update` event is emitted.
 
@@ -1256,7 +1261,7 @@ Returns `boolean` - Whether the current desktop environment is Unity launcher.
 ### `app.getLoginItemSettings([options])` _macOS_ _Windows_
 
 * `options` Object (optional)
-  * `type` string (optional) _macOS_ - Can be one of `mainAppService`, `agentService`, `daemonService`, or `loginItemService`. Defaults to `mainAppService`. Only available on macOS 13 and up. See [app.setLoginItemSettings](latest/api/app.md#appsetloginitemsettingssettings-macos-windows) for more information about each type.
+  * `type` string (optional) _macOS_ - Can be one of `mainAppService`, `agentService`, `daemonService`, or `loginItemService`. Defaults to `mainAppService`. Only available on macOS 13 and up. See [app.setLoginItemSettings](app.md#appsetloginitemsettingssettings-macos-windows) for more information about each type.
   * `serviceName` string (optional) _macOS_ - The name of the service. Required if `type` is non-default. Only available on macOS 13 and up.
   * `path` string (optional) _Windows_ - The executable path to compare against. Defaults to `process.execPath`.
   * `args` string[] (optional) _Windows_ - The command-line arguments to compare against. Defaults to an empty array.
@@ -1268,7 +1273,7 @@ Returns `Object`:
 
 * `openAtLogin` boolean - `true` if the app is set to open at login.
 * `openAsHidden` boolean _macOS_ _Deprecated_ - `true` if the app is set to open as hidden at login. This does not work on macOS 13 and up.
-* `wasOpenedAtLogin` boolean _macOS_ _Deprecated_ - `true` if the app was opened at login automatically. This setting is not available on [MAS builds][mas-builds] or on macOS 13 and up.
+* `wasOpenedAtLogin` boolean _macOS_ - `true` if the app was opened at login automatically.
 * `wasOpenedAsHidden` boolean _macOS_ _Deprecated_ - `true` if the app was opened as a hidden login item. This indicates that the app should not open any windows at startup. This setting is not available on [MAS builds][mas-builds] or on macOS 13 and up.
 * `restoreState` boolean _macOS_ _Deprecated_ - `true` if the app was opened as a login item that should restore the state from the previous session. This indicates that the app should restore the windows that were open the last time the app was closed. This setting is not available on [MAS builds][mas-builds] or on macOS 13 and up.
 * `status` string _macOS_ - can be one of `not-registered`, `enabled`, `requires-approval`, or `not-found`.
@@ -1285,8 +1290,7 @@ Returns `Object`:
 * `settings` Object
   * `openAtLogin` boolean (optional) - `true` to open the app at login, `false` to remove
     the app as a login item. Defaults to `false`.
-  * `openAsHidden` boolean (optional) _macOS_ _Deprecated_ - `true` to open the app as hidden. Defaults to `false`. The user can edit this setting from the System Preferences so `app.getLoginItemSettings().wasOpenedAsHidden` should be checked when the app is opened to know the current value. This setting is not available on [MAS build
-s][mas-builds] or on macOS 13 and up.
+  * `openAsHidden` boolean (optional) _macOS_ _Deprecated_ - `true` to open the app as hidden. Defaults to `false`. The user can edit this setting from the System Preferences so `app.getLoginItemSettings().wasOpenedAsHidden` should be checked when the app is opened to know the current value. This setting is not available on [MAS builds][mas-builds] or on macOS 13 and up.
   * `type` string (optional) _macOS_ - The type of service to add as a login item. Defaults to `mainAppService`. Only available on macOS 13 and up.
     * `mainAppService` - The primary application.
     * `agentService` - The property list name for a launch agent. The property list name must correspond to a property list in the app’s `Contents/Library/LaunchAgents` directory.
@@ -1361,7 +1365,7 @@ Show the app's about panel options. These options can be overridden with `app.se
   * `credits` string (optional) _macOS_ _Windows_ - Credit information.
   * `authors` string[] (optional) _Linux_ - List of app authors.
   * `website` string (optional) _Linux_ - The app's website.
-  * `iconPath` string (optional) _Linux_ _Windows_ - Path to the app's icon in a JPEG or PNG file format. On Linux, will be shown as 64x64 pixels while retaining aspect ratio.
+  * `iconPath` string (optional) _Linux_ _Windows_ - Path to the app's icon in a JPEG or PNG file format. On Linux, will be shown as 64x64 pixels while retaining aspect ratio. On Windows, a 48x48 PNG will result in the best visual quality.
 
 Set the about panel options. This will override the values defined in the app's `.plist` file on macOS. See the [Apple docs][about-panel-options] for more details. On Linux, values must be set in order to be shown; there are no defaults.
 
@@ -1405,7 +1409,7 @@ Start accessing a security scoped resource. With this method Electron applicatio
 
 ### `app.enableSandbox()`
 
-Enables full sandbox mode on the app. This means that all renderers will be launched sandboxed, regardless of the value of the `sandbox` flag in [`WebPreferences`](latest/api/structures/web-preferences.md).
+Enables full sandbox mode on the app. This means that all renderers will be launched sandboxed, regardless of the value of the `sandbox` flag in [`WebPreferences`](structures/web-preferences.md).
 
 This method can only be called before app is ready.
 
@@ -1417,7 +1421,7 @@ systems Application folder. Use in combination with `app.moveToApplicationsFolde
 ### `app.moveToApplicationsFolder([options])` _macOS_
 
 * `options` Object (optional)
-  * `conflictHandler` Function&#60;boolean&#62; (optional) - A handler for potential conflict in move failure.
+  * `conflictHandler` Function\<boolean> (optional) - A handler for potential conflict in move failure.
     * `conflictType` string - The type of move conflict encountered by the handler; can be `exists` or `existsAndRunning`, where `exists` means that an app of the same name is present in the Applications directory and `existsAndRunning` means both that it exists and that it's presently running.
 
 Returns `boolean` - Whether the move was successful. Please note that if
@@ -1425,7 +1429,7 @@ the move is successful, your application will quit and relaunch.
 
 No confirmation dialog will be presented by default. If you wish to allow
 the user to confirm the operation, you may do so using the
-[`dialog`](latest/api/dialog.md) API.
+[`dialog`](dialog.md) API.
 
 **NOTE:** This method throws errors if anything other than the user causes the
 move to fail. For instance if the user cancels the authorization dialog, this
@@ -1477,12 +1481,12 @@ details.
 
 ### `app.setProxy(config)`
 
-* `config` [ProxyConfig](latest/api/structures/proxy-config.md)
+* `config` [ProxyConfig](structures/proxy-config.md)
 
 Returns `Promise<void>` - Resolves when the proxy setting process is complete.
 
-Sets the proxy settings for networks requests made without an associated [Session](latest/api/session.md).
-Currently this will affect requests made with [Net](latest/api/net.md) in the [utility process](latest/glossary.md#utility-process)
+Sets the proxy settings for networks requests made without an associated [Session](session.md).
+Currently this will affect requests made with [Net](net.md) in the [utility process](../glossary.md#utility-process)
 and internal requests made by the runtime (ex: geolocation queries).
 
 This method can only be called after app is ready.
@@ -1491,7 +1495,39 @@ This method can only be called after app is ready.
 
 * `url` URL
 
-Returns `Promise<string>` - Resolves with the proxy information for `url` that will be used when attempting to make requests using [Net](latest/api/net.md) in the [utility process](latest/glossary.md#utility-process).
+Returns `Promise<string>` - Resolves with the proxy information for `url` that will be used when attempting to make requests using [Net](net.md) in the [utility process](../glossary.md#utility-process).
+
+### `app.setClientCertRequestPasswordHandler(handler)`  _Linux_
+
+* `handler` Function\<Promise\<string\>\>
+  * `clientCertRequestParams` Object
+    * `hostname` string - the hostname of the site requiring a client certificate
+    * `tokenName` string - the token (or slot) name of the cryptographic device
+    * `isRetry` boolean - whether there have been previous failed attempts at prompting the password
+
+  Returns `Promise<string>` - Resolves with the password
+
+The handler is called when a password is needed to unlock a client certificate for
+`hostname`.
+
+```js
+const { app } = require('electron')
+
+async function passwordPromptUI (text) {
+  return new Promise((resolve, reject) => {
+    // display UI to prompt user for password
+    // ...
+    // ...
+    resolve('the password')
+  })
+}
+
+app.setClientCertRequestPasswordHandler(async ({ hostname, tokenName, isRetry }) => {
+  const text = `Please sign in to ${tokenName} to authenticate to ${hostname} with your certificate`
+  const password = await passwordPromptUI(text)
+  return password
+})
+```
 
 ## Properties
 
@@ -1507,8 +1543,8 @@ This API must be called after the `ready` event is emitted.
 
 ### `app.applicationMenu`
 
-A `Menu | null` property that returns [`Menu`](latest/api/menu.md) if one has been set and `null` otherwise.
-Users can pass a [Menu](latest/api/menu.md) to set this property.
+A `Menu | null` property that returns [`Menu`](menu.md) if one has been set and `null` otherwise.
+Users can pass a [Menu](menu.md) to set this property.
 
 ### `app.badgeCount` _Linux_ _macOS_
 
@@ -1524,12 +1560,12 @@ to display notifications for this property to take effect.
 
 ### `app.commandLine` _Readonly_
 
-A [`CommandLine`](latest/api/command-line.md) object that allows you to read and manipulate the
+A [`CommandLine`](./command-line.md) object that allows you to read and manipulate the
 command line arguments that Chromium uses.
 
 ### `app.dock` _macOS_ _Readonly_
 
-A [`Dock`](latest/api/dock.md) `| undefined` object that allows you to perform actions on your app icon in the user's
+A [`Dock`](./dock.md) `| undefined` object that allows you to perform actions on your app icon in the user's
 dock on macOS.
 
 ### `app.isPackaged` _Readonly_
@@ -1545,7 +1581,7 @@ A `boolean` property that returns  `true` if the app is packaged, `false` otherw
 [handoff]: https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html
 [activity-type]: https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSUserActivity_Class/index.html#//apple_ref/occ/instp/NSUserActivity/activityType
 [unity-requirement]: https://help.ubuntu.com/community/UnityLaunchersAndDesktopFiles#Adding_shortcuts_to_a_launcher
-[mas-builds]: latest/tutorial/mac-app-store-submission-guide.md
+[mas-builds]: ../tutorial/mac-app-store-submission-guide.md
 [Squirrel-Windows]: https://github.com/Squirrel/Squirrel.Windows
 [JumpListBeginListMSDN]: https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icustomdestinationlist-beginlist
 [about-panel-options]: https://developer.apple.com/reference/appkit/nsapplication/1428479-orderfrontstandardaboutpanelwith?language=objc

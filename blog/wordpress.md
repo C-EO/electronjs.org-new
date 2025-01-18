@@ -8,10 +8,9 @@ authors:
   - name: johngodley
     url: 'https://github.com/johngodley'
     image_url: 'https://github.com/johngodley.png?size=96'
-  - name: zeke
-    url: 'https://github.com/zeke'
-    image_url: 'https://github.com/zeke.png?size=96'
+  - zeke
 slug: wordpress
+tags: [community, showcase]
 ---
 
 This week we caught up with folks at [Automattic](https://automattic.com/) to

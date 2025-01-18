@@ -1,11 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { ThemeClassNames } from '@docusaurus/theme-common';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error: TypeScript module resolution requires Node16 here
-// but that breaks other type imports in our scripts. Manually tested that
-// .`menu__link--active` still applies.
-import { isActiveSidebarItem } from '@docusaurus/theme-common/internal';
+import { isActiveSidebarItem } from '@docusaurus/plugin-content-docs/client';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import IconExternalLink from '@theme/Icon/ExternalLink';
@@ -19,6 +15,7 @@ export default function DocSidebarItemLink({
   onItemClick,
   activePath,
   level,
+  index, // eslint-disable-line @typescript-eslint/no-unused-vars
   ...props
 }: Props): JSX.Element {
   const { href, label, className, autoAddBaseUrl, customProps } = item;
@@ -30,7 +27,7 @@ export default function DocSidebarItemLink({
         ThemeClassNames.docs.docSidebarItemLink,
         ThemeClassNames.docs.docSidebarItemLinkLevel(level),
         'menu__list-item',
-        className
+        className,
       )}
       key={label}
     >
@@ -41,7 +38,7 @@ export default function DocSidebarItemLink({
           !isInternalLink && styles.menuExternalLink,
           {
             'menu__link--active': isActive,
-          }
+          },
         )}
         autoAddBaseUrl={autoAddBaseUrl}
         aria-current={isActive ? 'page' : undefined}

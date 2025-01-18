@@ -2,16 +2,11 @@
 title: Electron 6.0.0
 date: 2019-07-30T00:00:00.000Z
 authors:
-  - name: sofianguy
-    url: 'https://github.com/sofianguy'
-    image_url: 'https://github.com/sofianguy.png?size=96'
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
-  - name: codebytere
-    url: 'https://github.com/codebytere'
-    image_url: 'https://github.com/codebytere.png?size=96'
+  - sofianguy
+  - ckerr
+  - codebytere
 slug: electron-6-0
+tags: [release]
 ---
 
 The Electron team is excited to announce the release of Electron 6.0.0! You can install it with npm via `npm install electron@latest` or download it from our [releases website](https://electronjs.org/releases/stable). The release is packed with upgrades, fixes, and new features. We can't wait to see what you build with them! Continue reading for details about this release, and please share any feedback you have!

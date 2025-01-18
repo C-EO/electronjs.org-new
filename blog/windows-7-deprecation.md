@@ -1,11 +1,9 @@
 ---
 title: Farewell, Windows 7/8/8.1
 date: 2022-11-29T00:00:00.000Z
-authors:
-  - name: vertedinde
-    url: 'https://github.com/vertedinde'
-    image_url: 'https://github.com/vertedinde.png?size=96'
+authors: VerteDinde
 slug: windows-7-to-8-1-deprecation-notice
+tags: [news]
 ---
 
 Electron will end support of Windows 7, Windows 8 and Windows 8.1 beginning in Electron 23.
@@ -44,8 +42,8 @@ What this means for developers:
 
 **2023/02/16: An update on Windows Server 2012 support**
 
-Last month, Google announced that [Chrome 109 would continue to receive critical
-security fixes](https://support.google.com/chrome/a/thread/185534987) for
+Last month, Google announced that
+[Chrome 109 would continue to receive critical security fixes](https://support.google.com/chrome/a/thread/185534987) for
 Windows Server 2012 and Windows Server 2012 R2 until October 10, 2023.
 In accordance, Electron 22's (Chromium 108) planned end of life date will be extended from May 30, 2023 to October 10, 2023. The Electron team will continue to backport any security fixes that are part of this program to Electron 22 until October 10, 2023.
 

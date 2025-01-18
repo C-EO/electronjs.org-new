@@ -1,11 +1,9 @@
 ---
 title: Electron and the V8 Memory Cage
 date: 2022-06-30T00:00:00.000Z
-authors:
-  - name: nornagon
-    url: 'https://github.com/nornagon'
-    image_url: 'https://github.com/nornagon.png?size=96'
+authors: nornagon
 slug: v8-memory-cage
+tags: [news]
 ---
 
 Electron 21 and later will have the V8 Memory Cage enabled, with implications for some native modules.

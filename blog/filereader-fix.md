@@ -1,11 +1,9 @@
 ---
 title: Chromium FileReader Vulnerability Fix
 date: 2019-03-07T00:00:00.000Z
-authors:
-  name: marshallofsound
-  url: 'https://github.com/marshallofsound'
-  image_url: 'https://github.com/marshallofsound.png?size=96'
+authors: MarshallOfSound
 slug: filereader-fix
+tags: [security]
 ---
 
 A High severity vulnerability has been discovered in Chrome which affects all software based on Chromium, including Electron.

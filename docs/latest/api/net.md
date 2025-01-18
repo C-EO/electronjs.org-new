@@ -9,7 +9,7 @@ hide_title: false
 
 > Issue HTTP/HTTPS requests using Chromium's native networking library
 
-Process: [Main](latest/glossary.md#main-process), [Utility](latest/glossary.md#utility-process)
+Process: [Main](../glossary.md#main-process), [Utility](../glossary.md#utility-process)
 
 The `net` module is a client-side API for issuing HTTP(S) requests. It is
 similar to the [HTTP](https://nodejs.org/api/http.html) and
@@ -61,11 +61,11 @@ The `net` module has the following methods:
 
 ### `net.request(options)`
 
-* `options` ([ClientRequestConstructorOptions](latest/api/client-request.md#new-clientrequestoptions) | string) - The `ClientRequest` constructor options.
+* `options` ([ClientRequestConstructorOptions](client-request.md#new-clientrequestoptions) | string) - The `ClientRequest` constructor options.
 
-Returns [`ClientRequest`](latest/api/client-request.md)
+Returns [`ClientRequest`](./client-request.md)
 
-Creates a [`ClientRequest`](latest/api/client-request.md) instance using the provided
+Creates a [`ClientRequest`](./client-request.md) instance using the provided
 `options` which are directly forwarded to the `ClientRequest` constructor.
 The `net.request` method would be used to issue both secure and insecure HTTP
 requests according to the specified protocol scheme in the `options` object.
@@ -73,7 +73,7 @@ requests according to the specified protocol scheme in the `options` object.
 ### `net.fetch(input[, init])`
 
 * `input` string | [GlobalRequest](https://nodejs.org/api/globals.html#request)
-* `init` [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options) & { bypassCustomProtocolHandlers?: boolean } (optional)
+* `init` [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options) & \{ bypassCustomProtocolHandlers?: boolean \} (optional)
 
 Returns `Promise<GlobalResponse>` - see [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response).
 
@@ -93,9 +93,8 @@ async function example () {
 }
 ```
 
-This method will issue requests from the [default
-session](latest/api/session.md#sessiondefaultsession). To send a `fetch` request from
-another session, use [ses.fetch()](latest/api/session.md#sesfetchinput-init).
+This method will issue requests from the [default session](session.md#sessiondefaultsession).
+To send a `fetch` request from another session, use [ses.fetch()](session.md#sesfetchinput-init).
 
 See the MDN documentation for
 [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/fetch) for more
@@ -108,12 +107,11 @@ Limitations:
 * The `.type` and `.url` values of the returned `Response` object are
   incorrect.
 
-By default, requests made with `net.fetch` can be made to [custom
-protocols](latest/api/protocol.md) as well as `file:`, and will trigger
-[webRequest](latest/api/web-request.md) handlers if present. When the non-standard
-`bypassCustomProtocolHandlers` option is set in RequestInit, custom protocol
-handlers will not be called for this request. This allows forwarding an
-intercepted request to the built-in handler. [webRequest](latest/api/web-request.md)
+By default, requests made with `net.fetch` can be made to [custom protocols](protocol.md)
+as well as `file:`, and will trigger [webRequest](web-request.md) handlers if present.
+When the non-standard `bypassCustomProtocolHandlers` option is set in RequestInit,
+custom protocol handlers will not be called for this request. This allows forwarding an
+intercepted request to the built-in handler. [webRequest](web-request.md)
 handlers will still be triggered when bypassing custom protocols.
 
 ```js
@@ -126,7 +124,7 @@ protocol.handle('https', (req) => {
 })
 ```
 
-Note: in the [utility process](latest/glossary.md#utility-process) custom protocols
+Note: in the [utility process](../glossary.md#utility-process) custom protocols
 are not supported.
 
 ### `net.isOnline()`
@@ -139,7 +137,7 @@ won't be able to connect to remote sites. However, a return value of
 whether a particular connection attempt to a particular remote site
 will be successful.
 
-#### `net.resolveHost(host, [options])`
+### `net.resolveHost(host, [options])`
 
 * `host` string - Hostname to resolve.
 * `options` Object (optional)
@@ -172,11 +170,10 @@ will be successful.
     * `allow` (default)
     * `disable`
 
-Returns [`Promise<ResolvedHost>`](latest/api/structures/resolved-host.md) - Resolves with the resolved IP addresses for the `host`.
+Returns [`Promise<ResolvedHost>`](structures/resolved-host.md) - Resolves with the resolved IP addresses for the `host`.
 
-This method will resolve hosts from the [default
-session](latest/api/session.md#sessiondefaultsession). To resolve a host from
-another session, use [ses.resolveHost()](latest/api/session.md#sesresolvehosthost-options).
+This method will resolve hosts from the [default session](session.md#sessiondefaultsession).
+To resolve a host from another session, use [ses.resolveHost()](session.md#sesresolvehosthost-options).
 
 ## Properties
 

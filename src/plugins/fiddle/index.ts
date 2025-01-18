@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import semver from 'semver';
 import { Plugin } from '@docusaurus/types';
 
@@ -10,7 +9,7 @@ module.exports = async function fiddleVersionPlugin() {
         'https://github.com/electron/fiddle/releases/latest',
         {
           method: 'GET',
-        }
+        },
       );
 
       return response.url;

@@ -1,11 +1,9 @@
 ---
 title: Ecosystem 2023 Recap
 date: 2023-11-30T00:00:00.000Z
-authors:
-  - name: erickzhao
-    url: 'https://github.com/erickzhao'
-    image_url: 'https://github.com/erickzhao.png?size=96'
+authors: erickzhao
 slug: ecosystem-2023-eoy-recap
+tags: [ecosystem, showcase]
 ---
 
 Reflecting on the improvements and changes in Electron's developer ecosystem in 2023.

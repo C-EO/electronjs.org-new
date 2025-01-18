@@ -9,7 +9,7 @@ hide_title: false
 
 > Intercept and modify the contents of a request at various stages of its lifetime.
 
-Process: [Main](latest/glossary.md#main-process)<br />
+Process: [Main](../glossary.md#main-process)<br />
 _This class is not exported from the `'electron'` module. It is only available as a return value of other methods in the Electron API._
 
 Instances of the `WebRequest` class are accessed by using the `webRequest`
@@ -50,7 +50,7 @@ The following methods are available on instances of `WebRequest`:
 
 #### `webRequest.onBeforeRequest([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -58,11 +58,12 @@ The following methods are available on instances of `WebRequest`:
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
-    * `uploadData` [UploadData[]](latest/api/structures/upload-data.md)
+    * `uploadData` [UploadData[]](structures/upload-data.md)
   * `callback` Function
     * `response` Object
       * `cancel` boolean (optional)
@@ -93,7 +94,7 @@ Some examples of valid `urls`:
 
 #### `webRequest.onBeforeSendHeaders([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -101,16 +102,17 @@ Some examples of valid `urls`:
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
-    * `uploadData` [UploadData[]](latest/api/structures/upload-data.md) (optional)
-    * `requestHeaders` Record&#60;string, string&#62;
+    * `uploadData` [UploadData[]](structures/upload-data.md) (optional)
+    * `requestHeaders` Record\<string, string\>
   * `callback` Function
     * `beforeSendResponse` Object
       * `cancel` boolean (optional)
-      * `requestHeaders` Record&#60;string, string | string[]&#62; (optional) - When provided, request will be made
+      * `requestHeaders` Record\<string, string | string[]\> (optional) - When provided, request will be made
   with these headers.
 
 The `listener` will be called with `listener(details, callback)` before sending
@@ -121,7 +123,7 @@ The `callback` has to be called with a `response` object.
 
 #### `webRequest.onSendHeaders([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -129,11 +131,12 @@ The `callback` has to be called with a `response` object.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
-    * `requestHeaders` Record&#60;string, string&#62;
+    * `requestHeaders` Record\<string, string\>
 
 The `listener` will be called with `listener(details)` just before a request is
 going to be sent to the server, modifications of previous `onBeforeSendHeaders`
@@ -141,7 +144,7 @@ response are visible by the time this listener is fired.
 
 #### `webRequest.onHeadersReceived([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -149,17 +152,18 @@ response are visible by the time this listener is fired.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
     * `statusLine` string
     * `statusCode` Integer
-    * `responseHeaders` Record&#60;string, string[]&#62; (optional)
+    * `responseHeaders` Record\<string, string[]\> (optional)
   * `callback` Function
     * `headersReceivedResponse` Object
       * `cancel` boolean (optional)
-      * `responseHeaders` Record&#60;string, string | string[]&#62; (optional) - When provided, the server is assumed
+      * `responseHeaders` Record\<string, string | string[]\> (optional) - When provided, the server is assumed
         to have responded with these headers.
       * `statusLine` string (optional) - Should be provided when overriding
         `responseHeaders` to change header status otherwise original response
@@ -172,7 +176,7 @@ The `callback` has to be called with a `response` object.
 
 #### `webRequest.onResponseStarted([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -180,11 +184,12 @@ The `callback` has to be called with a `response` object.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
-    * `responseHeaders` Record&#60;string, string[]&#62; (optional)
+    * `responseHeaders` Record\<string, string[]\> (optional)
     * `fromCache` boolean - Indicates whether the response was fetched from disk
       cache.
     * `statusCode` Integer
@@ -196,7 +201,7 @@ and response headers are available.
 
 #### `webRequest.onBeforeRedirect([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -204,7 +209,8 @@ and response headers are available.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
@@ -214,14 +220,14 @@ and response headers are available.
     * `ip` string (optional) - The server IP address that the request was
       actually sent to.
     * `fromCache` boolean
-    * `responseHeaders` Record&#60;string, string[]&#62; (optional)
+    * `responseHeaders` Record\<string, string[]\> (optional)
 
 The `listener` will be called with `listener(details)` when a server initiated
 redirect is about to occur.
 
 #### `webRequest.onCompleted([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -229,11 +235,12 @@ redirect is about to occur.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double
-    * `responseHeaders` Record&#60;string, string[]&#62; (optional)
+    * `responseHeaders` Record\<string, string[]\> (optional)
     * `fromCache` boolean
     * `statusCode` Integer
     * `statusLine` string
@@ -244,7 +251,7 @@ completed.
 
 #### `webRequest.onErrorOccurred([filter, ]listener)`
 
-* `filter` [WebRequestFilter](latest/api/structures/web-request-filter.md) (optional)
+* `filter` [WebRequestFilter](structures/web-request-filter.md) (optional)
 * `listener` Function | null
   * `details` Object
     * `id` Integer
@@ -252,7 +259,8 @@ completed.
     * `method` string
     * `webContentsId` Integer (optional)
     * `webContents` WebContents (optional)
-    * `frame` WebFrameMain (optional)
+    * `frame` WebFrameMain | null (optional) - Requesting frame.
+      May be `null` if accessed after the frame has either navigated or been destroyed.
     * `resourceType` string - Can be `mainFrame`, `subFrame`, `stylesheet`, `script`, `image`, `font`, `object`, `xhr`, `ping`, `cspReport`, `media`, `webSocket` or `other`.
     * `referrer` string
     * `timestamp` Double

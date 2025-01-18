@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import stream from 'node:stream';
+import type { ReadableStream } from 'node:stream/web';
 
-import path from 'path';
-import makeDir from 'make-dir';
 import tar from 'tar-stream';
-import got from 'got';
 import globby from 'globby';
 
 interface DownloadOptions {
@@ -55,8 +55,7 @@ const saveContents = async (files: Entry[], destination: string) => {
       continue;
     }
 
-    await makeDir(path.dirname(finalPath));
-
+    await fs.mkdir(path.dirname(finalPath), { recursive: true });
     await fs.writeFile(finalPath, content);
   }
 };
@@ -66,7 +65,7 @@ const saveContents = async (files: Entry[], destination: string) => {
  * @param options
  */
 const downloadFromGitHub = async (
-  options: DownloadOptions
+  options: DownloadOptions,
 ): Promise<Entry[]> => {
   const { org, repository, target, downloadMatch = '' } = options;
 
@@ -75,40 +74,44 @@ const downloadFromGitHub = async (
   const contents = [];
 
   return new Promise((resolve) => {
-    got
-      .stream(tarballUrl)
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      .pipe(require('gunzip-maybe')())
-      .pipe(
-        tar
-          .extract()
-          .on('entry', (header, stream, next) => {
-            header.name = header.name.replace(`${repository}-${target}`, '');
+    fetch(tarballUrl).then(({ body }) => {
+      // Type assertion is necessary because of a SNAFU with @types/node
+      // and the built-in fetch types. See this discussion for more info:
+      // https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/65542
+      stream.Readable.fromWeb(body as ReadableStream<Uint8Array>)
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        .pipe(require('gunzip-maybe')())
+        .pipe(
+          tar
+            .extract()
+            .on('entry', (header, stream, next) => {
+              header.name = header.name.replace(`${repository}-${target}`, '');
 
-            if (header.type === 'file' && header.name.match(downloadMatch)) {
-              const chunks = [];
-              stream.on('data', (data) => {
-                chunks.push(data);
-              });
-              stream.on('end', () => {
-                const content = Buffer.concat(chunks);
-                contents.push({
-                  filename: header.name.replace(`${downloadMatch}/`, ''),
-                  slug: path.basename(header.name, '.md'),
-                  content,
-                } satisfies Entry);
+              if (header.type === 'file' && header.name.match(downloadMatch)) {
+                const chunks = [];
+                stream.on('data', (data) => {
+                  chunks.push(data);
+                });
+                stream.on('end', () => {
+                  const content = Buffer.concat(chunks);
+                  contents.push({
+                    filename: header.name.replace(`${downloadMatch}`, ''),
+                    slug: path.basename(header.name, '.md'),
+                    content,
+                  } satisfies Entry);
 
+                  next();
+                });
+              } else {
                 next();
-              });
-            } else {
-              next();
-            }
-            stream.resume();
-          })
-          .on('finish', () => {
-            resolve(contents);
-          })
-      );
+              }
+              stream.resume();
+            })
+            .on('finish', () => {
+              resolve(contents);
+            }),
+        );
+    });
   });
 };
 

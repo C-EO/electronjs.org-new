@@ -1,11 +1,9 @@
 ---
 title: Announcing TypeScript support in Electron
 date: 2017-06-01T00:00:00.000Z
-authors:
-  name: zeke
-  url: 'https://github.com/zeke'
-  image_url: 'https://github.com/zeke.png?size=96'
+authors: zeke
 slug: typescript
+tags: [ecosystem]
 ---
 
 The `electron` npm package now includes a TypeScript definition file that provides detailed annotations of the entire Electron API. These annotations can improve your Electron development

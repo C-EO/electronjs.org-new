@@ -14,7 +14,7 @@ see [SECURITY.md](https://github.com/electron/electron/blob/main/SECURITY.md).
 
 For upstream Chromium vulnerabilities: Electron keeps up to date with alternating
 Chromium releases. For more information, see the
-[Electron Release Timelines](latest/tutorial/electron-timelines.md) document.
+[Electron Release Timelines](../tutorial/electron-timelines.md) document.
 
 :::
 
@@ -82,8 +82,8 @@ will be able to execute native code on the user's machine.
 Under no circumstances should you load and execute remote code with
 Node.js integration enabled. Instead, use only local files (packaged together
 with your application) to execute Node.js code. To display remote content, use
-the [`<webview>`][webview-tag] tag or [`BrowserView`][browser-view], make sure
-to disable the `nodeIntegration` and enable `contextIsolation`.
+the [`<webview>`][webview-tag] tag or a [`WebContentsView`][web-contents-view]
+and make sure to disable the `nodeIntegration` and enable `contextIsolation`.
 
 :::
 
@@ -127,8 +127,8 @@ To automate the detection of misconfigurations and insecure patterns, it is
 possible to use
 [Electronegativity](https://github.com/doyensec/electronegativity). For
 additional details on potential weaknesses and implementation bugs when
-developing applications using Electron, please refer to this [guide for
-developers and auditors](https://doyensec.com/resources/us-17-Carettoni-Electronegativity-A-Study-Of-Electron-Security-wp.pdf).
+developing applications using Electron, please refer to this
+[guide for developers and auditors](https://doyensec.com/resources/us-17-Carettoni-Electronegativity-A-Study-Of-Electron-Security-wp.pdf).
 
 ### 1. Only load secure content
 
@@ -176,7 +176,7 @@ This recommendation is the default behavior in Electron since 5.0.0.
 :::
 
 It is paramount that you do not enable Node.js integration in any renderer
-([`BrowserWindow`][browser-window], [`BrowserView`][browser-view], or
+([`BrowserWindow`][browser-window], [`WebContentsView`][web-contents-view], or
 [`<webview>`][webview-tag]) that loads remote content. The goal is to limit the
 powers you grant to remote content, thus making it dramatically more difficult
 for an attacker to harm your users should they gain the ability to execute
@@ -232,7 +232,7 @@ mainWindow.loadURL('https://example.com')
 When disabling Node.js integration, you can still expose APIs to your website that
 do consume Node.js modules or features. Preload scripts continue to have access
 to `require` and other Node.js features, allowing developers to expose a custom
-API to remotely loaded content via the [contextBridge API](latest/api/context-bridge.md).
+API to remotely loaded content via the [contextBridge API](../api/context-bridge.md).
 
 ### 3. Enable Context Isolation
 
@@ -256,9 +256,9 @@ and prevent the use of Node primitives `contextIsolation` **must** also be used.
 :::info
 
 For more information on what `contextIsolation` is and how to enable it please
-see our dedicated [Context Isolation](latest/tutorial/context-isolation.md) document.
+see our dedicated [Context Isolation](context-isolation.md) document.
 
-:::info
+:::
 
 ### 4. Enable process sandboxing
 
@@ -271,9 +271,9 @@ content in an unsandboxed process, including the main process, is not advised.
 :::info
 
 For more information on what Process Sandboxing is and how to enable it please
-see our dedicated [Process Sandboxing](latest/tutorial/sandbox.md) document.
+see our dedicated [Process Sandboxing](sandbox.md) document.
 
-:::info
+:::
 
 ### 5. Handle session permission requests from remote content
 
@@ -324,8 +324,8 @@ This recommendation is Electron's default.
 
 You may have already guessed that disabling the `webSecurity` property on a
 renderer process ([`BrowserWindow`][browser-window],
-[`BrowserView`][browser-view], or [`<webview>`][webview-tag]) disables crucial
-security features.
+[`WebContentsView`][web-contents-view], or [`<webview>`][webview-tag]) disables
+crucial security features.
 
 Do not disable `webSecurity` in production applications.
 
@@ -390,7 +390,7 @@ Content-Security-Policy: script-src 'self' https://apis.example.com
 
 Electron respects the [`Content-Security-Policy` HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy)
 which can be set using Electron's
-[`webRequest.onHeadersReceived`](latest/api/web-request.md#webrequestonheadersreceivedfilter-listener)
+[`webRequest.onHeadersReceived`](../api/web-request.md#webrequestonheadersreceivedfilter-listener)
 handler:
 
 ```js title='main.js (Main Process)'
@@ -668,8 +668,8 @@ windows at runtime.
 
 #### How?
 
-[`webContents`][web-contents] will delegate to its [window open
-handler][window-open-handler] before creating new windows. The handler will
+[`webContents`][web-contents] will delegate to its
+[window open handler][window-open-handler] before creating new windows. The handler will
 receive, amongst other parameters, the `url` the window was requested to open
 and the options used to create it. We recommend that you register a handler to
 monitor the creation of windows, and deny any unexpected window creation.
@@ -803,14 +803,14 @@ set of files.
 
 #### How?
 
-Follow the [`protocol.handle`](latest/api/protocol.md#protocolhandlescheme-handler) examples to
+Follow the [`protocol.handle`](../api/protocol.md#protocolhandlescheme-handler) examples to
 learn how to serve files / content from a custom protocol.
 
 ### 19. Check which fuses you can change
 
 Electron ships with a number of options that can be useful but a large portion of
 applications probably don't need. In order to avoid having to build your own version of
-Electron, these can be turned off or on using [Fuses](latest/tutorial/fuses.md).
+Electron, these can be turned off or on using [Fuses](./fuses.md).
 
 #### Why?
 
@@ -826,14 +826,14 @@ that your application might have the rights for.
 We've made a module, [`@electron/fuses`](https://npmjs.com/package/@electron/fuses), to make
 flipping these fuses easy. Check out the README of that module for more details on usage and
 potential error cases, and refer to
-[How do I flip the fuses?](latest/tutorial/fuses.md#how-do-i-flip-the-fuses) in our documentation.
+[How do I flip the fuses?](./fuses.md#how-do-i-flip-the-fuses) in our documentation.
 
-[breaking-changes]: latest/breaking-changes.md
-[browser-window]: latest/api/browser-window.md
-[browser-view]: latest/api/browser-view.md
-[webview-tag]: latest/api/webview-tag.md
-[web-contents]: latest/api/web-contents.md
-[window-open-handler]: latest/api/web-contents.md#contentssetwindowopenhandlerhandler
-[will-navigate]: latest/api/web-contents.md#event-will-navigate
-[open-external]: latest/api/shell.md#shellopenexternalurl-options
+[breaking-changes]: ../breaking-changes.md
+[browser-window]: ../api/browser-window.md
+[webview-tag]: ../api/webview-tag.md
+[web-contents-view]: ../api/web-contents-view.md
 [responsible-disclosure]: https://en.wikipedia.org/wiki/Responsible_disclosure
+[web-contents]: ../api/web-contents.md
+[window-open-handler]: ../api/web-contents.md#contentssetwindowopenhandlerhandler
+[will-navigate]: ../api/web-contents.md#event-will-navigate
+[open-external]: ../api/shell.md#shellopenexternalurl-options

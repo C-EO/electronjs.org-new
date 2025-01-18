@@ -7,7 +7,7 @@ hide_title: false
 
 # Breaking Changes
 
-Breaking changes will be documented here, and deprecation warnings added to JS code where possible, at least [one major version](latest/tutorial/electron-versioning.md#semver) before the change is made.
+Breaking changes will be documented here, and deprecation warnings added to JS code where possible, at least [one major version](tutorial/electron-versioning.md#semver) before the change is made.
 
 ### Types of Breaking Changes
 
@@ -18,6 +18,195 @@ This document uses the following convention to categorize breaking changes:
 * **Default Changed:** Code depending on the old default may break, not necessarily throwing an exception. The old behavior can be restored by explicitly specifying the value.
 * **Deprecated:** An API was marked as deprecated. The API will continue to function, but will emit a deprecation warning, and will be removed in a future release.
 * **Removed:** An API or feature was removed, and is no longer supported by Electron.
+
+## Planned Breaking API Changes (35.0)
+
+### Deprecated: `level`, `message`, `line`, and `sourceId` arguments in `console-message` event on `WebContents`
+
+The `console-message` event on `WebContents` has been updated to provide details on the `Event`
+argument.
+
+```js
+// Deprecated
+webContents.on('console-message', (event, level, message, line, sourceId) => {})
+
+// Replace with:
+webContents.on('console-message', ({ level, message, lineNumber, sourceId, frame }) => {})
+```
+
+Additionally, `level` is now a string with possible values of `info`, `warning`, `error`, and `debug`.
+
+## Planned Breaking API Changes (34.0)
+
+### Behavior Changed: menu bar will be hidden during fullscreen on Windows
+
+This brings the behavior to parity with Linux. Prior behavior: Menu bar is still visible during fullscreen on Windows. New behavior: Menu bar is hidden during fullscreen on Windows.
+
+**Correction**: This was previously listed as a breaking change in Electron 33, but was first released in Electron 34.
+
+## Planned Breaking API Changes (33.0)
+
+### Behavior Changed: frame properties may retrieve detached WebFrameMain instances or none at all
+
+APIs which provide access to a `WebFrameMain` instance may return an instance
+with `frame.detached` set to `true`, or possibly return `null`.
+
+When a frame performs a cross-origin navigation, it enters into a detached state
+in which it's no longer attached to the page. In this state, it may be running
+[unload](https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event)
+handlers prior to being deleted. In the event of an IPC sent during this state,
+`frame.detached` will be set to `true` with the frame being destroyed shortly
+thereafter.
+
+When receiving an event, it's important to access WebFrameMain properties
+immediately upon being received. Otherwise, it's not guaranteed to point to the
+same webpage as when received. To avoid misaligned expectations, Electron will
+return `null` in the case of late access where the webpage has changed.
+
+```ts
+ipcMain.on('unload-event', (event) => {
+  event.senderFrame; // ✅ accessed immediately
+});
+
+ipcMain.on('unload-event', async (event) => {
+  await crossOriginNavigationPromise;
+  event.senderFrame; // ❌ returns `null` due to late access
+});
+```
+
+### Behavior Changed: custom protocol URL handling on Windows
+
+Due to changes made in Chromium to support [Non-Special Scheme URLs](http://bit.ly/url-non-special), custom protocol URLs that use Windows file paths will no longer work correctly with the deprecated `protocol.registerFileProtocol` and the `baseURLForDataURL` property on `BrowserWindow.loadURL`, `WebContents.loadURL`, and `<webview>.loadURL`.  `protocol.handle` will also not work with these types of URLs but this is not a change since it has always worked that way.
+
+```js
+// No longer works
+protocol.registerFileProtocol('other', () => {
+  callback({ filePath: '/path/to/my/file' })
+})
+
+const mainWindow = new BrowserWindow()
+mainWindow.loadURL('data:text/html,<script src="loaded-from-dataurl.js"></script>', { baseURLForDataURL: 'other://C:\\myapp' })
+mainWindow.loadURL('other://C:\\myapp\\index.html')
+
+// Replace with
+const path = require('node:path')
+const nodeUrl = require('node:url')
+protocol.handle(other, (req) => {
+  const srcPath = 'C:\\myapp\\'
+  const reqURL = new URL(req.url)
+  return net.fetch(nodeUrl.pathToFileURL(path.join(srcPath, reqURL.pathname)).toString())
+})
+
+mainWindow.loadURL('data:text/html,<script src="loaded-from-dataurl.js"></script>', { baseURLForDataURL: 'other://' })
+mainWindow.loadURL('other://index.html')
+```
+
+### Behavior Changed: `webContents` property on `login` on `app`
+
+The `webContents` property in the `login` event from `app` will be `null`
+when the event is triggered for requests from the [utility process](api/utility-process.md)
+created with `respondToAuthRequestsFromMainProcess` option.
+
+### Deprecated: `textured` option in `BrowserWindowConstructorOption.type`
+
+The `textured` option of `type` in `BrowserWindowConstructorOptions` has been deprecated with no replacement. This option relied on the [`NSWindowStyleMaskTexturedBackground`](https://developer.apple.com/documentation/appkit/nswindowstylemask/nswindowstylemasktexturedbackground) style mask on macOS, which has been deprecated with no alternative.
+
+### Removed: macOS 10.15 support
+
+macOS 10.15 (Catalina) is no longer supported by [Chromium](https://chromium-review.googlesource.com/c/chromium/src/+/5734361).
+
+Older versions of Electron will continue to run on Catalina, but macOS 11 (Big Sur)
+or later will be required to run Electron v33.0.0 and higher.
+
+### Deprecated: `systemPreferences.accessibilityDisplayShouldReduceTransparency`
+
+The `systemPreferences.accessibilityDisplayShouldReduceTransparency` property is now deprecated in favor of the new `nativeTheme.prefersReducedTransparency`, which provides identical information and works cross-platform.
+
+```js
+// Deprecated
+const shouldReduceTransparency = systemPreferences.accessibilityDisplayShouldReduceTransparency
+
+// Replace with:
+const prefersReducedTransparency = nativeTheme.prefersReducedTransparency
+```
+
+## Planned Breaking API Changes (32.0)
+
+### Removed: `File.path`
+
+The nonstandard `path` property of the Web `File` object was added in an early version of Electron as a convenience method for working with native files when doing everything in the renderer was more common. However, it represents a deviation from the standard and poses a minor security risk as well, so beginning in Electron 32.0 it has been removed in favor of the [`webUtils.getPathForFile`](api/web-utils.md#webutilsgetpathforfilefile) method.
+
+```js
+// Before (renderer)
+
+const file = document.querySelector('input[type=file]').files[0]
+alert(`Uploaded file path was: ${file.path}`)
+```
+
+```js
+// After (renderer)
+
+const file = document.querySelector('input[type=file]').files[0]
+electron.showFilePath(file)
+
+// (preload)
+const { contextBridge, webUtils } = require('electron')
+
+contextBridge.exposeInMainWorld('electron', {
+  showFilePath (file) {
+    // It's best not to expose the full file path to the web content if
+    // possible.
+    const path = webUtils.getPathForFile(file)
+    alert(`Uploaded file path was: ${path}`)
+  }
+})
+```
+
+### Deprecated: `clearHistory`, `canGoBack`, `goBack`, `canGoForward`, `goForward`, `goToIndex`, `canGoToOffset`, `goToOffset` on `WebContents`
+
+The navigation-related APIs are now deprecated.
+
+These APIs have been moved to the `navigationHistory` property of `WebContents` to provide a more structured and intuitive interface for managing navigation history.
+
+```js
+// Deprecated
+win.webContents.clearHistory()
+win.webContents.canGoBack()
+win.webContents.goBack()
+win.webContents.canGoForward()
+win.webContents.goForward()
+win.webContents.goToIndex(index)
+win.webContents.canGoToOffset()
+win.webContents.goToOffset(index)
+
+// Replace with
+win.webContents.navigationHistory.clear()
+win.webContents.navigationHistory.canGoBack()
+win.webContents.navigationHistory.goBack()
+win.webContents.navigationHistory.canGoForward()
+win.webContents.navigationHistory.goForward()
+win.webContents.navigationHistory.canGoToOffset()
+win.webContents.navigationHistory.goToOffset(index)
+```
+
+## Planned Breaking API Changes (31.0)
+
+### Removed: `WebSQL` support
+
+Chromium has removed support for WebSQL upstream, transitioning it to Android only. See
+[Chromium's intent to remove discussion](https://groups.google.com/a/chromium.org/g/blink-dev/c/fWYb6evVA-w/m/wGI863zaAAAJ)
+for more information.
+
+### Behavior Changed: `nativeImage.toDataURL` will preserve PNG colorspace
+
+PNG decoder implementation has been changed to preserve colorspace data, the
+encoded data returned from this function now matches it.
+
+See [crbug.com/332584706](https://issues.chromium.org/issues/332584706) for more information.
+
+### Behavior Changed: `window.flashFrame(bool)` will flash dock icon continuously on macOS
+
+This brings the behavior to parity with Windows and Linux. Prior behavior: The first `flashFrame(true)` bounces the dock icon only once (using the [NSInformationalRequest](https://developer.apple.com/documentation/appkit/nsrequestuserattentiontype/nsinformationalrequest) level) and `flashFrame(false)` does nothing. New behavior: Flash continuously until `flashFrame(false)` is called. This uses the [NSCriticalRequest](https://developer.apple.com/documentation/appkit/nsrequestuserattentiontype/nscriticalrequest) level instead. To explicitly use `NSInformationalRequest` to cause a single dock icon bounce, it is still possible to use [`dock.bounce('informational')`](https://www.electronjs.org/docs/latest/api/dock#dockbouncetype-macos).
 
 ## Planned Breaking API Changes (30.0)
 
@@ -32,6 +221,46 @@ more information.
 ### Removed: The `--disable-color-correct-rendering` switch
 
 This switch was never formally documented but it's removal is being noted here regardless. Chromium itself now has better support for color spaces so this flag should not be needed.
+
+### Behavior Changed: `BrowserView.setAutoResize` behavior on macOS
+
+In Electron 30, BrowserView is now a wrapper around the new [WebContentsView](api/web-contents-view.md) API.
+
+Previously, the `setAutoResize` function of the `BrowserView` API was backed by [autoresizing](https://developer.apple.com/documentation/appkit/nsview/1483281-autoresizingmask?language=objc) on macOS, and by a custom algorithm on Windows and Linux.
+For simple use cases such as making a BrowserView fill the entire window, the behavior of these two approaches was identical.
+However, in more advanced cases, BrowserViews would be autoresized differently on macOS than they would be on other platforms, as the custom resizing algorithm for Windows and Linux did not perfectly match the behavior of macOS's autoresizing API.
+The autoresizing behavior is now standardized across all platforms.
+
+If your app uses `BrowserView.setAutoResize` to do anything more complex than making a BrowserView fill the entire window, it's likely you already had custom logic in place to handle this difference in behavior on macOS.
+If so, that logic will no longer be needed in Electron 30 as autoresizing behavior is consistent.
+
+### Deprecated: `BrowserView`
+
+The [`BrowserView`](./api/browser-view.md) class has been deprecated and
+replaced by the new [`WebContentsView`](./api/web-contents-view.md) class.
+
+`BrowserView` related methods in [`BrowserWindow`](./api/browser-window.md) have
+also been deprecated:
+
+```js
+BrowserWindow.fromBrowserView(browserView)
+win.setBrowserView(browserView)
+win.getBrowserView()
+win.addBrowserView(browserView)
+win.removeBrowserView(browserView)
+win.setTopBrowserView(browserView)
+win.getBrowserViews()
+```
+
+### Removed: `params.inputFormType` property on `context-menu` on `WebContents`
+
+The `inputFormType` property of the params object in the `context-menu`
+event from `WebContents` has been removed. Use the new `formControlType`
+property instead.
+
+### Removed: `process.getIOCounters()`
+
+Chromium has removed access to this information.
 
 ## Planned Breaking API Changes (29.0)
 
@@ -136,7 +365,7 @@ if (ret === null) {
 
 ### Removed: `ipcRenderer.sendTo()`
 
-The `ipcRenderer.sendTo()` API has been removed. It should be replaced by setting up a [`MessageChannel`](latest/tutorial/message-ports.md#setting-up-a-messagechannel-between-two-renderers) between the renderers.
+The `ipcRenderer.sendTo()` API has been removed. It should be replaced by setting up a [`MessageChannel`](tutorial/message-ports.md#setting-up-a-messagechannel-between-two-renderers) between the renderers.
 
 The `senderId` and `senderIsMainFrame` properties of `IpcRendererEvent` have been removed as well.
 
@@ -210,7 +439,7 @@ or later will be required to run Electron v27.0.0 and higher.
 
 ### Deprecated: `ipcRenderer.sendTo()`
 
-The `ipcRenderer.sendTo()` API has been deprecated. It should be replaced by setting up a [`MessageChannel`](latest/tutorial/message-ports.md#setting-up-a-messagechannel-between-two-renderers) between the renderers.
+The `ipcRenderer.sendTo()` API has been deprecated. It should be replaced by setting up a [`MessageChannel`](tutorial/message-ports.md#setting-up-a-messagechannel-between-two-renderers) between the renderers.
 
 The `senderId` and `senderIsMainFrame` properties of `IpcRendererEvent` have been deprecated as well.
 
@@ -350,10 +579,10 @@ systemPreferences.getColor('selected-content-background')
 
 ## Planned Breaking API Changes (25.0)
 
-### Deprecated: `protocol.{register,intercept}{Buffer,String,Stream,File,Http}Protocol`
+### Deprecated: `protocol.{un,}{register,intercept}{Buffer,String,Stream,File,Http}Protocol` and `protocol.isProtocol{Registered,Intercepted}`
 
 The `protocol.register*Protocol` and `protocol.intercept*Protocol` methods have
-been replaced with [`protocol.handle`](latest/api/protocol.md#protocolhandlescheme-handler).
+been replaced with [`protocol.handle`](api/protocol.md#protocolhandlescheme-handler).
 
 The new method can either register a new protocol or intercept an existing
 protocol, and responses can be of any type.
@@ -492,7 +721,7 @@ Older versions of Electron will continue to run on these operating systems, but 
 
 The deprecated `scroll-touch-begin`, `scroll-touch-end` and `scroll-touch-edge`
 events on BrowserWindow have been removed. Instead, use the newly available
-[`input-event` event](latest/api/web-contents.md#event-input-event) on WebContents.
+[`input-event` event](api/web-contents.md#event-input-event) on WebContents.
 
 ```js
 // Removed in Electron 23.0
@@ -600,7 +829,7 @@ w.capturePage().then(image => {
 
 ### Removed: WebContents `new-window` event
 
-The `new-window` event of WebContents has been removed. It is replaced by [`webContents.setWindowOpenHandler()`](latest/api/web-contents.md#contentssetwindowopenhandlerhandler).
+The `new-window` event of WebContents has been removed. It is replaced by [`webContents.setWindowOpenHandler()`](api/web-contents.md#contentssetwindowopenhandlerhandler).
 
 ```js
 // Removed in Electron 22
@@ -650,8 +879,8 @@ document.getElementById('webview').addEventListener('new-window', () => {
 ### Deprecated: BrowserWindow `scroll-touch-*` events
 
 The `scroll-touch-begin`, `scroll-touch-end` and `scroll-touch-edge` events on
-BrowserWindow are deprecated. Instead, use the newly available [`input-event`
-event](latest/api/web-contents.md#event-input-event) on WebContents.
+BrowserWindow are deprecated. Instead, use the newly available
+[`input-event` event](api/web-contents.md#event-input-event) on WebContents.
 
 ```js
 // Deprecated
@@ -676,8 +905,8 @@ win.webContents.on('input-event', (_, event) => {
 ### Behavior Changed: V8 Memory Cage enabled
 
 The V8 memory cage has been enabled, which has implications for native modules
-which wrap non-V8 memory with `ArrayBuffer` or `Buffer`. See the [blog post
-about the V8 memory cage](https://www.electronjs.org/blog/v8-memory-cage) for
+which wrap non-V8 memory with `ArrayBuffer` or `Buffer`. See the
+[blog post about the V8 memory cage](https://www.electronjs.org/blog/v8-memory-cage) for
 more details.
 
 ### API Changed: `webContents.printToPDF()`
@@ -768,7 +997,7 @@ requires unsafe mode), so Electron is unable to support this feature on Linux.
 
 The handler invoked when `session.setDevicePermissionHandler(handler)` is used
 has a change to its arguments.  This handler no longer is passed a frame
-[`WebFrameMain`](latest/api/web-frame-main.md), but instead is passed the `origin`, which
+[`WebFrameMain`](api/web-frame-main.md), but instead is passed the `origin`, which
 is the origin that is checking for device permission.
 
 ## Planned Breaking API Changes (19.0)
@@ -787,7 +1016,7 @@ Prior to Electron 15, `window.open` was by default shimmed to use
 to open synchronously scriptable child windows, among other incompatibilities.
 Since Electron 15, `nativeWindowOpen` has been enabled by default.
 
-See the documentation for [window.open in Electron](latest/api/window-open.md)
+See the documentation for [window.open in Electron](api/window-open.md)
 for more details.
 
 ## Planned Breaking API Changes (17.0)
@@ -830,7 +1059,7 @@ Prior to Electron 15, `window.open` was by default shimmed to use
 to open synchronously scriptable child windows, among other incompatibilities.
 Since Electron 15, `nativeWindowOpen` has been enabled by default.
 
-See the documentation for [window.open in Electron](latest/api/window-open.md)
+See the documentation for [window.open in Electron](api/window-open.md)
 for more details.
 
 ## Planned Breaking API Changes (16.0)
@@ -866,7 +1095,7 @@ Prior to Electron 15, `window.open` was by default shimmed to use
 to open synchronously scriptable child windows, among other incompatibilities.
 `nativeWindowOpen` is no longer experimental, and is now the default.
 
-See the documentation for [window.open in Electron](latest/api/window-open.md)
+See the documentation for [window.open in Electron](api/window-open.md)
 for more details.
 
 ### Deprecated: `app.runningUnderRosettaTranslation`
@@ -921,7 +1150,7 @@ For more detailed information see [#18397](https://github.com/electron/electron/
 
 The optional parameter `frameName` will no longer set the title of the window. This now follows the specification described by the [native documentation](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#parameters) under the corresponding parameter `windowName`.
 
-If you were using this parameter to set the title of a window, you can instead use [win.setTitle(title)](latest/api/browser-window.md#winsettitletitle).
+If you were using this parameter to set the title of a window, you can instead use [win.setTitle(title)](api/browser-window.md#winsettitletitle).
 
 ### Removed: `worldSafeExecuteJavaScript`
 
@@ -929,7 +1158,7 @@ In Electron 14, `worldSafeExecuteJavaScript` will be removed.  There is no alter
 ensure your code works with this property enabled.  It has been enabled by default since Electron
 12.
 
-You will be affected by this change if you use either `webFrame.executeJavaScript` or `webFrame.executeJavaScriptInIsolatedWorld`. You will need to ensure that values returned by either of those methods are supported by the [Context Bridge API](latest/api/context-bridge.md#parameter--error--return-type-support) as these methods use the same value passing semantics.
+You will be affected by this change if you use either `webFrame.executeJavaScript` or `webFrame.executeJavaScriptInIsolatedWorld`. You will need to ensure that values returned by either of those methods are supported by the [Context Bridge API](api/context-bridge.md#parameter--error--return-type-support) as these methods use the same value passing semantics.
 
 ### Removed: BrowserWindowConstructorOptions inheriting from parent windows
 
@@ -1088,7 +1317,7 @@ nativeTheme.shouldUseHighContrastColors
 
 ### Deprecated: WebContents `new-window` event
 
-The `new-window` event of WebContents has been deprecated. It is replaced by [`webContents.setWindowOpenHandler()`](latest/api/web-contents.md#contentssetwindowopenhandlerhandler).
+The `new-window` event of WebContents has been deprecated. It is replaced by [`webContents.setWindowOpenHandler()`](api/web-contents.md#contentssetwindowopenhandlerhandler).
 
 ```js
 // Deprecated in Electron 13
@@ -1124,7 +1353,7 @@ value.
 In Electron 12, `contextIsolation` will be enabled by default.  To restore
 the previous behavior, `contextIsolation: false` must be specified in WebPreferences.
 
-We [recommend having contextIsolation enabled](latest/tutorial/security.md#3-enable-context-isolation) for the security of your application.
+We [recommend having contextIsolation enabled](tutorial/security.md#3-enable-context-isolation) for the security of your application.
 
 Another implication is that `require()` cannot be used in the renderer process unless
 `nodeIntegration` is `true` and `contextIsolation` is `false`.
@@ -1279,8 +1508,7 @@ const w = new BrowserWindow({
 })
 ```
 
-We [recommend moving away from the remote
-module](https://medium.com/@nornagon/electrons-remote-module-considered-harmful-70d69500f31).
+We [recommend moving away from the remote module](https://medium.com/@nornagon/electrons-remote-module-considered-harmful-70d69500f31).
 
 ### `protocol.unregisterProtocol`
 
@@ -1440,12 +1668,11 @@ You can see the original API proposal and reasoning [here](https://github.com/el
 
 ### Behavior Changed: Values sent over IPC are now serialized with Structured Clone Algorithm
 
-The algorithm used to serialize objects sent over IPC (through
-`ipcRenderer.send`, `ipcRenderer.sendSync`, `WebContents.send` and related
-methods) has been switched from a custom algorithm to V8's built-in [Structured
-Clone Algorithm][SCA], the same algorithm used to serialize messages for
-`postMessage`. This brings about a 2x performance improvement for large
-messages, but also brings some breaking changes in behavior.
+The algorithm used to serialize objects sent over IPC (through `ipcRenderer.send`,
+`ipcRenderer.sendSync`, `WebContents.send` and related methods) has been switched from a custom
+algorithm to V8's built-in [Structured Clone Algorithm][SCA], the same algorithm used to serialize
+messages for `postMessage`. This brings about a 2x performance improvement for large messages,
+but also brings some breaking changes in behavior.
 
 * Sending Functions, Promises, WeakMaps, WeakSets, or objects containing any
   such values, over IPC will now throw an exception, instead of silently
@@ -1671,7 +1898,7 @@ folder
 └── file3
 ```
 
-In Electron <=6, this would return a `FileList` with a `File` object for:
+In Electron &lt;=6, this would return a `FileList` with a `File` object for:
 
 ```console
 path/to/folder
@@ -1687,7 +1914,7 @@ In Electron 7, this now returns a `FileList` with a `File` object for:
 
 Note that `webkitdirectory` no longer exposes the path to the selected folder.
 If you require the path to the selected folder rather than the folder contents,
-see the `dialog.showOpenDialog` API ([link](latest/api/dialog.md#dialogshowopendialogbrowserwindow-options)).
+see the `dialog.showOpenDialog` API ([link](api/dialog.md#dialogshowopendialogwindow-options)).
 
 ### API Changed: Callback-based versions of promisified APIs
 
@@ -1952,8 +2179,8 @@ app.getGPUInfo('basic')
 When building native modules for windows, the `win_delay_load_hook` variable in
 the module's `binding.gyp` must be true (which is the default). If this hook is
 not present, then the native module will fail to load on Windows, with an error
-message like `Cannot find module`. See the [native module
-guide](latest/tutorial/using-native-node-modules.md) for more.
+message like `Cannot find module`.
+See the [native module guide](./tutorial/using-native-node-modules.md) for more.
 
 ### Removed: IA32 Linux support
 

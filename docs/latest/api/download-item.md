@@ -9,7 +9,7 @@ hide_title: false
 
 > Control file downloads from remote sources.
 
-Process: [Main](latest/glossary.md#main-process)<br />
+Process: [Main](../glossary.md#main-process)<br />
 _This class is not exported from the `'electron'` module. It is only available as a return value of other methods in the Electron API._
 
 `DownloadItem` is an [EventEmitter][event-emitter] that represents a download item in Electron.
@@ -100,7 +100,7 @@ save dialog.
 #### `downloadItem.setSaveDialogOptions(options)`
 
 * `options` SaveDialogOptions - Set the save file dialog options. This object has the same
-properties as the `options` parameter of [`dialog.showSaveDialog()`](latest/api/dialog.md).
+properties as the `options` parameter of [`dialog.showSaveDialog()`](dialog.md).
 
 This API allows the user to set custom options for the save dialog that opens
 for the download item by default.
@@ -152,6 +152,10 @@ Returns `string` - The file name of the download item.
 disk. If user changes the file name in a prompted download saving dialog, the
 actual name of saved file will be different.
 
+#### `downloadItem.getCurrentBytesPerSecond()`
+
+Returns `Integer` - The current download speed in bytes per second.
+
 #### `downloadItem.getTotalBytes()`
 
 Returns `Integer` - The total size in bytes of the download item.
@@ -161,6 +165,10 @@ If the size is unknown, it returns 0.
 #### `downloadItem.getReceivedBytes()`
 
 Returns `Integer` - The received bytes of the download item.
+
+#### `downloadItem.getPercentComplete()`
+
+Returns `Integer` - The download completion in percent.
 
 #### `downloadItem.getContentDisposition()`
 
@@ -190,6 +198,10 @@ Returns `string` - ETag header value.
 
 Returns `Double` - Number of seconds since the UNIX epoch when the download was
 started.
+
+#### `downloadItem.getEndTime()`
+
+Returns `Double` - Number of seconds since the UNIX epoch when the download ended.
 
 ### Instance Properties
 

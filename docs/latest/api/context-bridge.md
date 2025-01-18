@@ -1,15 +1,22 @@
 ---
 title: "contextBridge"
-description: "Create a safe, bi-directional, synchronous bridge across isolated contexts"
+description: "YAML history changes: - pr-url: https://github.com/electron/electron/pull/40330 description: \"ipcRenderer can no longer be sent over the contextBridge\" breaking-changes-header: behavior-changed-ipcrenderer-can-no-longer-be-sent-over-the-contextbridge"
 slug: context-bridge
 hide_title: false
 ---
 
 # contextBridge
 
+```YAML history
+changes:
+  - pr-url: https://github.com/electron/electron/pull/40330
+    description: "`ipcRenderer` can no longer be sent over the `contextBridge`"
+    breaking-changes-header: behavior-changed-ipcrenderer-can-no-longer-be-sent-over-the-contextbridge
+```
+
 > Create a safe, bi-directional, synchronous bridge across isolated contexts
 
-Process: [Renderer](latest/glossary.md#renderer-process)
+Process: [Renderer](../glossary.md#renderer-process)
 
 An example of exposing an API to a renderer from an isolated preload script is given below:
 
@@ -42,7 +49,7 @@ page you load in your renderer executes code in this world.
 
 When `contextIsolation` is enabled in your `webPreferences` (this is the default behavior since Electron 12.0.0), your `preload` scripts run in an
 "Isolated World".  You can read more about context isolation and what it affects in the
-[security](latest/tutorial/security.md#3-enable-context-isolation) docs.
+[security](../tutorial/security.md#3-enable-context-isolation) docs.
 
 ## Methods
 
@@ -136,7 +143,7 @@ has been included below for completeness:
 | `Object` | Complex | ✅ | ✅ | Keys must be supported using only "Simple" types in this table.  Values must be supported in this table.  Prototype modifications are dropped.  Sending custom classes will copy values but not the prototype. |
 | `Array` | Complex | ✅ | ✅ | Same limitations as the `Object` type |
 | `Error` | Complex | ✅ | ✅ | Errors that are thrown are also copied, this can result in the message and stack trace of the error changing slightly due to being thrown in a different context, and any custom properties on the Error object [will be lost](https://github.com/electron/electron/issues/25596) |
-| `Promise` | Complex | ✅ | ✅ | N/A
+| `Promise` | Complex | ✅ | ✅ | N/A |
 | `Function` | Complex | ✅ | ✅ | Prototype modifications are dropped.  Sending classes or constructors will not work. |
 | [Cloneable Types](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) | Simple | ✅ | ✅ | See the linked document on cloneable types |
 | `Element` | Complex | ✅ | ✅ | Prototype modifications are dropped.  Sending custom elements will not work. |
@@ -144,6 +151,25 @@ has been included below for completeness:
 | `Symbol` | N/A | ❌ | ❌ | Symbols cannot be copied across contexts so they are dropped |
 
 If the type you care about is not in the above table, it is probably not supported.
+
+### Exposing ipcRenderer
+
+Attempting to send the entire `ipcRenderer` module as an object over the `contextBridge` will result in
+an empty object on the receiving side of the bridge. Sending over `ipcRenderer` in full can let any
+code send any message, which is a security footgun. To interact through `ipcRenderer`, provide a safe wrapper
+like below:
+
+```js
+// Preload (Isolated World)
+contextBridge.exposeInMainWorld('electron', {
+  onMyEventName: (callback) => ipcRenderer.on('MyEventName', (e, ...args) => callback(args))
+})
+```
+
+```js @ts-nocheck
+// Renderer (Main World)
+window.electron.onMyEventName(data => { /* ... */ })
+```
 
 ### Exposing Node Global Symbols
 

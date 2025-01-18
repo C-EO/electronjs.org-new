@@ -2,16 +2,11 @@
 title: Electron 14.0.0
 date: 2021-08-31T00:00:00.000Z
 authors:
-  - name: sofianguy
-    url: 'https://github.com/sofianguy'
-    image_url: 'https://github.com/sofianguy.png?size=96'
-  - name: clavin
-    url: 'https://github.com/clavin'
-    image_url: 'https://github.com/clavin.png?size=96'
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
+  - sofianguy
+  - clavin
+  - ckerr
 slug: electron-14-0
+tags: [release]
 ---
 
 Electron 14.0.0 has been released! It includes upgrades to Chromium `93` and V8 `9.3`. We've added several API updates, bug fixes, and general improvements. Read below for more details!

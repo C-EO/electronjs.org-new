@@ -1,11 +1,9 @@
 ---
 title: Electron Userland
 date: 2016-12-20T00:00:00.000Z
-authors:
-  name: zeke
-  url: 'https://github.com/zeke'
-  image_url: 'https://github.com/zeke.png?size=96'
+authors: zeke
 slug: userland
+tags: [community, ecosystem]
 ---
 
 We've added a new [userland](https://electronjs.org/userland) section to
@@ -73,8 +71,7 @@ As you type into this input, the URL of the page is updated dynamically. This
 allows you to copy a URL representing a particular slice of userland data,
 then share it with others.
 
-[![babel](https://cloud.githubusercontent.com/assets/2289/21328807/7bfa75e4-c5ea-11e6-8212-0e7988b367fd.png)
-](https://electronjs.org/userland/dev_dependencies?q=babel%20preset)
+[![babel](https://cloud.githubusercontent.com/assets/2289/21328807/7bfa75e4-c5ea-11e6-8212-0e7988b367fd.png)](https://electronjs.org/userland/dev_dependencies?q=babel%20preset)
 
 ## More to come
 

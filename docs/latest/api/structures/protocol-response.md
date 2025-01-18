@@ -17,7 +17,7 @@ hide_title: false
   `"text/html"`. Setting `mimeType` would implicitly set the `content-type`
   header in response, but if `content-type` is already set in `headers`, the
   `mimeType` would be ignored.
-* `headers` Record&#60;string, string | string[]&#62; (optional) - An object containing the response headers. The
+* `headers` Record\<string, string | string[]\> (optional) - An object containing the response headers. The
   keys must be string, and values must be either string or Array of string.
 * `data` (Buffer | string | ReadableStream) (optional) - The response body. When
   returning stream as response, this is a Node.js readable stream representing
@@ -35,7 +35,7 @@ hide_title: false
 * `session` Session (optional) - The session used for requesting URL, by default
   the HTTP request will reuse the current session. Setting `session` to `null`
   would use a random independent session. This is only used for URL responses.
-* `uploadData` [ProtocolResponseUploadData](latest/api/structures/protocol-response-upload-data.md) (optional) - The data used as upload data. This is only
+* `uploadData` [ProtocolResponseUploadData](protocol-response-upload-data.md) (optional) - The data used as upload data. This is only
   used for URL responses when `method` is `"POST"`.
 
 [net-error]: https://source.chromium.org/chromium/chromium/src/+/main:net/base/net_error_list.h

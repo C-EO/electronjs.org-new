@@ -2,13 +2,10 @@
 title: Electron 17.0.0
 date: 2022-02-01T00:00:00.000Z
 authors:
-  - name: mlaurencin
-    url: 'https://github.com/mlaurencin'
-    image_url: 'https://github.com/mlaurencin.png?size=96'
-  - name: VerteDinde
-    url: 'https://github.com/VerteDinde'
-    image_url: 'https://github.com/VerteDinde.png?size=96'
+  - mlaurencin
+  - VerteDinde
 slug: electron-17-0
+tags: [release]
 ---
 
 Electron 17.0.0 has been released! It includes upgrades to Chromium `98`, V8 `9.8`, and Node.js `16.13.0`. Read below for more details!

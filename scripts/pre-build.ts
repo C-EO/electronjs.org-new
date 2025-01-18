@@ -3,17 +3,18 @@
  * right places, and transform it to make it ready to
  * be used by docusaurus.
  */
+import { existsSync } from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
-import { existsSync, remove } from 'fs-extra';
 import latestVersion from 'latest-version';
 import logger from '@docusaurus/logger';
 
 import { copy, download } from './tasks/download-docs';
 import { addFrontmatterToAllDocs } from './tasks/add-frontmatter';
-import { createSidebar } from './tasks/create-sidebar';
 import { fixContent } from './tasks/md-fixers';
 import { copyNewContent } from './tasks/copy-new-content';
+import { preprocessApiHistory } from './tasks/preprocess-api-history';
 
 const DOCS_FOLDER = path.join(__dirname, '..', 'docs', 'latest');
 
@@ -25,7 +26,7 @@ const DOCS_FOLDER = path.join(__dirname, '..', 'docs', 'latest');
 const start = async (source: string): Promise<void> => {
   logger.info(`Running ${logger.green('electronjs.org')} pre-build scripts...`);
   logger.info(`Deleting previous content at ${logger.green(DOCS_FOLDER)}`);
-  await remove(DOCS_FOLDER);
+  await fs.rm(DOCS_FOLDER, { recursive: true, force: true });
 
   const localElectron =
     source && (source.includes('/') || source.includes('\\'));
@@ -35,10 +36,10 @@ const start = async (source: string): Promise<void> => {
     const stableBranch = version.replace(/\.\d+\.\d+/, '-x-y');
     logger.info(
       `Fetching ${logger.green(
-        `electron`
+        `electron`,
       )} information from npm: \n\t Latest version: ${logger.green(
-        version
-      )} \n\t Stable branch: ${logger.green(stableBranch)}`
+        version,
+      )} \n\t Stable branch: ${logger.green(stableBranch)}`,
     );
 
     const target = source || stableBranch;
@@ -49,8 +50,9 @@ const start = async (source: string): Promise<void> => {
       org: process.env.ORG || 'electron',
       repository: 'electron',
       destination: DOCS_FOLDER,
-      downloadMatch: 'docs',
+      downloadMatch: '/docs/',
     });
+    await fs.writeFile(path.join(DOCS_FOLDER, '.sha'), target);
   } else if (existsSync(source)) {
     await copy({
       target: source,
@@ -65,14 +67,14 @@ const start = async (source: string): Promise<void> => {
   logger.info('Copying new content');
   await copyNewContent(DOCS_FOLDER);
 
+  logger.info('Finding, validating, and uncommenting API history blocks');
+  await preprocessApiHistory(DOCS_FOLDER);
+
   logger.info('Fixing markdown');
   await fixContent('docs', 'latest');
 
   logger.info('Adding automatic frontmatter');
   await addFrontmatterToAllDocs(DOCS_FOLDER);
-
-  logger.info('Updating website sidebar');
-  await createSidebar('docs', path.join(process.cwd(), 'sidebars.js'));
 };
 
 start(process.argv[2]);

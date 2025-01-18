@@ -1,11 +1,9 @@
 ---
 title: New Electron Release Cadence
 date: 2019-05-13T00:00:00.000Z
-authors:
-  name: sofianguy
-  url: 'https://github.com/sofianguy'
-  image_url: 'https://github.com/sofianguy.png?size=96'
+authors: sofianguy
 slug: 12-week-cadence
+tags: [news, release]
 ---
 
 :::info ⚡️ Update (2021-07-14): We're going even faster!

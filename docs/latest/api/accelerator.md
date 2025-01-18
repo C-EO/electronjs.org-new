@@ -11,15 +11,15 @@ hide_title: false
 
 Accelerators are strings that can contain multiple modifiers and a single key code,
 combined by the `+` character, and are used to define keyboard shortcuts
-throughout your application.
+throughout your application. Accelerators are case insensitive.
 
 Examples:
 
 * `CommandOrControl+A`
 * `CommandOrControl+Shift+Z`
 
-Shortcuts are registered with the [`globalShortcut`](latest/api/global-shortcut.md) module
-using the [`register`](latest/api/global-shortcut.md#globalshortcutregisteraccelerator-callback)
+Shortcuts are registered with the [`globalShortcut`](global-shortcut.md) module
+using the [`register`](global-shortcut.md#globalshortcutregisteraccelerator-callback)
 method, i.e.
 
 ```js

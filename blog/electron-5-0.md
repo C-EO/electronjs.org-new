@@ -5,13 +5,10 @@ authors:
   - name: BinaryMuse
     url: 'https://github.com/BinaryMuse'
     image_url: 'https://github.com/BinaryMuse.png?size=96'
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
-  - name: jkleinsc
-    url: 'https://github.com/jkleinsc'
-    image_url: 'https://github.com/jkleinsc.png?size=96'
+  - ckerr
+  - jkleinsc
 slug: electron-5-0
+tags: [release]
 ---
 
 The Electron team is excited to announce the release of Electron 5.0.0! You can install it with npm via `npm install electron@latest` or download the tarballs from [our releases page](https://github.com/electron/electron/releases/tag/v5.0.0). The release is packed with upgrades, fixes, and new features. We can't wait to see what you build with them! Continue reading for details about this release, and please share any feedback you have!

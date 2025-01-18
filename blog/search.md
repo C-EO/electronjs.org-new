@@ -8,10 +8,9 @@ authors:
   - name: vanessayuenn
     url: 'https://github.com/vanessayuenn'
     image_url: 'https://github.com/vanessayuenn.png?size=96'
-  - name: zeke
-    url: 'https://github.com/zeke'
-    image_url: 'https://github.com/zeke.png?size=96'
+  - zeke
 slug: search
+tags: [website]
 ---
 
 The Electron website has a new search engine that delivers instant results for

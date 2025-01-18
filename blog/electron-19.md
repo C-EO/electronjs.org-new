@@ -2,13 +2,10 @@
 title: Electron 19.0.0
 date: 2022-05-24T00:00:00.000Z
 authors:
-  - name: VerteDinde
-    url: 'https://github.com/VerteDinde'
-    image_url: 'https://github.com/VerteDinde.png?size=96'
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
+  - VerteDinde
+  - ckerr
 slug: electron-19-0
+tags: [release]
 ---
 
 Electron 19.0.0 has been released! It includes upgrades to Chromium `102`, V8 `10.2`, and Node.js `16.14.2`. Read below for more details!

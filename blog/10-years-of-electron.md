@@ -1,11 +1,9 @@
 ---
 title: 10 years of Electron 🎉
 date: 2023-03-13T00:00:00.000Z
-authors:
-  name: erickzhao
-  url: 'https://github.com/erickzhao'
-  image_url: 'https://github.com/erickzhao.png?size=96'
+authors: erickzhao
 slug: 10-years-of-electron
+tags: [community, news]
 ---
 
 # 10 Years of Electron 🎉
@@ -136,8 +134,8 @@ What have we been doing to develop our community presence?
 - In 2020, we participated in the initial iteration of Google Season of Docs, where we worked with
   [@bandantonio](https://github.com/bandantonio) to rework Electron’s new user tutorial flow.
 - In 2022, we mentored a Google Summer of Code student for the first time.
-  [@aryanshridhar](https://github.com/aryanshridhar) did some awesome work to refactor [Electron
-  Fiddle](https://github.com/electron/fiddle)'s core version loading logic and migrate its bundler
+  [@aryanshridhar](https://github.com/aryanshridhar) did some awesome work to refactor
+  [Electron Fiddle](https://github.com/electron/fiddle)'s core version loading logic and migrate its bundler
   to [webpack](https://webpack.js.org/).
 
 ### Automate all the things!

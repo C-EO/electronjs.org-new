@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency: publish
 
@@ -16,20 +17,62 @@ jobs:
     name: Upload to Crowdin
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag: v4.1.1
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # tag: v4.0.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag: v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # tag: v4.1.0
         with:
           node-version: 20
       - name: Install dependencies
-        uses: bahmutov/npm-install@237ded403e6012a48281f4572eab0c8eafe55b3f # tag: v1.10.1
+        uses: bahmutov/npm-install@ec9e87262db2a1be2ca3ceb2d506c413a220542c # tag: v1.10.5
       - name: Upload sources to Crowdin
         run: 'yarn i18n:upload'
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
   build-and-deploy:
-    uses: electron/website/.github/workflows/build-and-deploy.yml@main
-    with:
-      branch: main
-    secrets:
-      SAS: ${{ secrets.SAS }}
+    name: Build and deploy the website
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    steps:
+      - name: Set GIT_BRANCH
+        run: echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Print GIT_BRANCH
+        run: echo $GIT_BRANCH
+      - name: Print content
+        run: ls -ln
+      # This should be set up from earlier
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag: v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # tag: v4.1.0
+        with:
+          node-version: 20
+      - name: Install dependencies
+        uses: bahmutov/npm-install@ec9e87262db2a1be2ca3ceb2d506c413a220542c # tag: v1.10.5
+      - name: Lint
+        run: yarn lint
+        env:
+          CI: true
+      - name: Docusaurus Cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # tag: v4.2.0
+        with:
+          path: |
+            ${{ github.workspace }}/.docusaurus
+            ${{ github.workspace }}/**/.cache
+          key: |
+            ${{ runner.os }}-docusaurus-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-docusaurus-${{ hashFiles('**/yarn.lock') }}
+      - name: Add Docusaurus problem matcher
+        run: echo "::add-matcher::.github/problem-matchers/docusaurus.json"
+      - name: Build default locale site
+        run: yarn build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish everything to Storage
+        uses: nick-invision/retry@7152eba30c6575329ac0576536151aca5a72780e # tag: v3.0.0
+        with:
+          timeout_seconds: 300
+          max_attempts: 3
+          retry_on: error
+          command: ./scripts/bin/azcopy copy "./build/*" "https://electronwebsite.blob.core.windows.net/%24web/?$SAS" --recursive
+        env:
+          SAS: ${{ secrets.SAS }}

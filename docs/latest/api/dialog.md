@@ -9,7 +9,7 @@ hide_title: false
 
 > Display native system dialogs for opening and saving files, alerting, etc.
 
-Process: [Main](latest/glossary.md#main-process)
+Process: [Main](../glossary.md#main-process)
 
 An example of showing a dialog to select multiple files:
 
@@ -22,15 +22,15 @@ console.log(dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] 
 
 The `dialog` module has the following methods:
 
-### `dialog.showOpenDialogSync([browserWindow, ]options)`
+### `dialog.showOpenDialogSync([window, ]options)`
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `title` string (optional)
   * `defaultPath` string (optional)
   * `buttonLabel` string (optional) - Custom label for the confirmation button, when
     left empty the default label will be used.
-  * `filters` [FileFilter[]](latest/api/structures/file-filter.md) (optional)
+  * `filters` [FileFilter[]](structures/file-filter.md) (optional)
   * `properties` string[]&#32;(optional) - Contains which features the dialog should
     use. The following values are supported:
     * `openFile` - Allow files to be selected.
@@ -54,7 +54,7 @@ The `dialog` module has the following methods:
 
 Returns `string[] | undefined`, the file paths chosen by the user; if the dialog is cancelled it returns `undefined`.
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
 
 The `filters` specifies an array of file types that can be displayed or
 selected when you want to limit the user to a specific type. For example:
@@ -79,21 +79,26 @@ and a directory selector, so if you set `properties` to
 `['openFile', 'openDirectory']` on these platforms, a directory selector will be
 shown.
 
-```js @ts-type={mainWindow:Electron.BrowserWindow}
+```js @ts-type={mainWindow:Electron.BaseWindow}
 dialog.showOpenDialogSync(mainWindow, {
   properties: ['openFile', 'openDirectory']
 })
 ```
 
-### `dialog.showOpenDialog([browserWindow, ]options)`
+**Note:** On Linux `defaultPath` is not supported when using portal file chooser
+dialogs unless the portal backend is version 4 or higher. You can use `--xdg-portal-required-version`
+[command-line switch](./command-line-switches.md#--xdg-portal-required-versionversion)
+to force gtk or kde dialogs.
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+### `dialog.showOpenDialog([window, ]options)`
+
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `title` string (optional)
   * `defaultPath` string (optional)
   * `buttonLabel` string (optional) - Custom label for the confirmation button, when
     left empty the default label will be used.
-  * `filters` [FileFilter[]](latest/api/structures/file-filter.md) (optional)
+  * `filters` [FileFilter[]](structures/file-filter.md) (optional)
   * `properties` string[]&#32;(optional) - Contains which features the dialog should
     use. The following values are supported:
     * `openFile` - Allow files to be selected.
@@ -121,7 +126,7 @@ Returns `Promise<Object>` - Resolve with an object containing the following:
 * `filePaths` string[] - An array of file paths chosen by the user. If the dialog is cancelled this will be an empty array.
 * `bookmarks` string[]&#32;(optional) _macOS_ _mas_ - An array matching the `filePaths` array of base64 encoded strings which contains security scoped bookmark data. `securityScopedBookmarks` must be enabled for this to be populated. (For return values, see [table here](#bookmarks-array).)
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
 
 The `filters` specifies an array of file types that can be displayed or
 selected when you want to limit the user to a specific type. For example:
@@ -146,7 +151,7 @@ and a directory selector, so if you set `properties` to
 `['openFile', 'openDirectory']` on these platforms, a directory selector will be
 shown.
 
-```js @ts-type={mainWindow:Electron.BrowserWindow}
+```js @ts-type={mainWindow:Electron.BaseWindow}
 dialog.showOpenDialog(mainWindow, {
   properties: ['openFile', 'openDirectory']
 }).then(result => {
@@ -157,16 +162,21 @@ dialog.showOpenDialog(mainWindow, {
 })
 ```
 
-### `dialog.showSaveDialogSync([browserWindow, ]options)`
+**Note:** On Linux `defaultPath` is not supported when using portal file chooser
+dialogs unless the portal backend is version 4 or higher. You can use `--xdg-portal-required-version`
+[command-line switch](./command-line-switches.md#--xdg-portal-required-versionversion)
+to force gtk or kde dialogs.
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+### `dialog.showSaveDialogSync([window, ]options)`
+
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `title` string (optional) - The dialog title. Cannot be displayed on some _Linux_ desktop environments.
   * `defaultPath` string (optional) - Absolute directory path, absolute file
     path, or file name to use by default.
   * `buttonLabel` string (optional) - Custom label for the confirmation button, when
     left empty the default label will be used.
-  * `filters` [FileFilter[]](latest/api/structures/file-filter.md) (optional)
+  * `filters` [FileFilter[]](structures/file-filter.md) (optional)
   * `message` string (optional) _macOS_ - Message to display above text fields.
   * `nameFieldLabel` string (optional) _macOS_ - Custom label for the text
     displayed in front of the filename text field.
@@ -181,23 +191,23 @@ dialog.showOpenDialog(mainWindow, {
     * `dontAddToRecent` _Windows_ - Do not add the item being saved to the recent documents list.
   * `securityScopedBookmarks` boolean (optional) _macOS_ _mas_ - Create a [security scoped bookmark](https://developer.apple.com/library/content/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16) when packaged for the Mac App Store. If this option is enabled and the file doesn't already exist a blank file will be created at the chosen path.
 
-Returns `string | undefined`, the path of the file chosen by the user; if the dialog is cancelled it returns `undefined`.
+Returns `string`, the path of the file chosen by the user; if the dialog is cancelled it returns an empty string.
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
 
 The `filters` specifies an array of file types that can be displayed, see
 `dialog.showOpenDialog` for an example.
 
-### `dialog.showSaveDialog([browserWindow, ]options)`
+### `dialog.showSaveDialog([window, ]options)`
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `title` string (optional) - The dialog title. Cannot be displayed on some _Linux_ desktop environments.
   * `defaultPath` string (optional) - Absolute directory path, absolute file
     path, or file name to use by default.
   * `buttonLabel` string (optional) - Custom label for the confirmation button, when
     left empty the default label will be used.
-  * `filters` [FileFilter[]](latest/api/structures/file-filter.md) (optional)
+  * `filters` [FileFilter[]](structures/file-filter.md) (optional)
   * `message` string (optional) _macOS_ - Message to display above text fields.
   * `nameFieldLabel` string (optional) _macOS_ - Custom label for the text
     displayed in front of the filename text field.
@@ -214,10 +224,10 @@ The `filters` specifies an array of file types that can be displayed, see
 Returns `Promise<Object>` - Resolve with an object containing the following:
 
 * `canceled` boolean - whether or not the dialog was canceled.
-* `filePath` string (optional) - If the dialog is canceled, this will be `undefined`.
+* `filePath` string - If the dialog is canceled, this will be an empty string.
 * `bookmark` string (optional) _macOS_ _mas_ - Base64 encoded string which contains the security scoped bookmark data for the saved file. `securityScopedBookmarks` must be enabled for this to be present. (For return values, see [table here](#bookmarks-array).)
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
 
 The `filters` specifies an array of file types that can be displayed, see
 `dialog.showOpenDialog` for an example.
@@ -225,9 +235,9 @@ The `filters` specifies an array of file types that can be displayed, see
 **Note:** On macOS, using the asynchronous version is recommended to avoid issues when
 expanding and collapsing the dialog.
 
-### `dialog.showMessageBoxSync([browserWindow, ]options)`
+### `dialog.showMessageBoxSync([wndow, ]options)`
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `message` string - Content of the message box.
   * `type` string (optional) - Can be `none`, `info`, `error`, `question` or
@@ -240,7 +250,7 @@ expanding and collapsing the dialog.
     be selected by default when the message box opens.
   * `title` string (optional) - Title of the message box, some platforms will not show it.
   * `detail` string (optional) - Extra information of the message.
-  * `icon` ([NativeImage](latest/api/native-image.md) | string) (optional)
+  * `icon` ([NativeImage](native-image.md) | string) (optional)
   * `textWidth` Integer (optional) _macOS_ - Custom width of the text in the message box.
   * `cancelId` Integer (optional) - The index of the button to be used to cancel the dialog, via
     the `Esc` key. By default this is assigned to the first button with "cancel" or "no" as the
@@ -265,12 +275,12 @@ Returns `Integer` - the index of the clicked button.
 Shows a message box, it will block the process until the message box is closed.
 It returns the index of the clicked button.
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
-If `browserWindow` is not shown dialog will not be attached to it. In such case it will be displayed as an independent window.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
+If `window` is not shown dialog will not be attached to it. In such case it will be displayed as an independent window.
 
-### `dialog.showMessageBox([browserWindow, ]options)`
+### `dialog.showMessageBox([window, ]options)`
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
   * `message` string - Content of the message box.
   * `type` string (optional) - Can be `none`, `info`, `error`, `question` or
@@ -292,7 +302,7 @@ If `browserWindow` is not shown dialog will not be attached to it. In such case 
     include a checkbox with the given label.
   * `checkboxChecked` boolean (optional) - Initial checked state of the
     checkbox. `false` by default.
-  * `icon` ([NativeImage](latest/api/native-image.md) | string) (optional)
+  * `icon` ([NativeImage](native-image.md) | string) (optional)
   * `textWidth` Integer (optional) _macOS_ - Custom width of the text in the message box.
   * `cancelId` Integer (optional) - The index of the button to be used to cancel the dialog, via
     the `Esc` key. By default this is assigned to the first button with "cancel" or "no" as the
@@ -320,7 +330,7 @@ Returns `Promise<Object>` - resolves with a promise containing the following pro
 
 Shows a message box.
 
-The `browserWindow` argument allows the dialog to attach itself to a parent window, making it modal.
+The `window` argument allows the dialog to attach itself to a parent window, making it modal.
 
 ### `dialog.showErrorBox(title, content)`
 
@@ -334,25 +344,25 @@ it is usually used to report errors in early stage of startup. If called
 before the app `ready`event on Linux, the message will be emitted to stderr,
 and no GUI dialog will appear.
 
-### `dialog.showCertificateTrustDialog([browserWindow, ]options)` _macOS_ _Windows_
+### `dialog.showCertificateTrustDialog([window, ]options)` _macOS_ _Windows_
 
-* `browserWindow` [BrowserWindow](latest/api/browser-window.md) (optional)
+* `window` [BaseWindow](base-window.md) (optional)
 * `options` Object
-  * `certificate` [Certificate](latest/api/structures/certificate.md) - The certificate to trust/import.
+  * `certificate` [Certificate](structures/certificate.md) - The certificate to trust/import.
   * `message` string - The message to display to the user.
 
 Returns `Promise<void>` - resolves when the certificate trust dialog is shown.
 
 On macOS, this displays a modal dialog that shows a message and certificate
 information, and gives the user the option of trusting/importing the
-certificate. If you provide a `browserWindow` argument the dialog will be
+certificate. If you provide a `window` argument the dialog will be
 attached to the parent window, making it modal.
 
 On Windows the options are more limited, due to the Win32 APIs used:
 
 * The `message` argument is not used, as the OS provides its own confirmation
    dialog.
-* The `browserWindow` argument is ignored since it is not possible to make
+* The `window` argument is ignored since it is not possible to make
    this confirmation dialog modal.
 
 ## Bookmarks array
@@ -369,10 +379,10 @@ On Windows the options are more limited, due to the Win32 APIs used:
 ## Sheets
 
 On macOS, dialogs are presented as sheets attached to a window if you provide
-a [`BrowserWindow`](latest/api/browser-window.md) reference in the `browserWindow` parameter, or modals if no
+a [`BaseWindow`](base-window.md) reference in the `window` parameter, or modals if no
 window is provided.
 
-You can call `BrowserWindow.getCurrentWindow().setSheetOffset(offset)` to change
+You can call `BaseWindow.getCurrentWindow().setSheetOffset(offset)` to change
 the offset from the window frame where sheets are attached.
 
 [AbortSignal]: https://nodejs.org/api/globals.html#globals_class_abortsignal

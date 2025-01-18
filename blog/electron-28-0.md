@@ -1,11 +1,9 @@
 ---
 title: Electron 28.0.0
 date: 2023-12-06T00:00:00.000Z
-authors:
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
+authors: ckerr
 slug: electron-28-0
+tags: [release]
 ---
 
 Electron 28.0.0 has been released! It includes upgrades to Chromium `120.0.6099.56`, V8 `12.0`, and Node.js `18.18.2`.

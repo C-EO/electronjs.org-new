@@ -13,16 +13,16 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag: v4.1.1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag: v4.2.2
 
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # tag: v4.0.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # tag: v4.1.0
         with:
           node-version: 20
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@237ded403e6012a48281f4572eab0c8eafe55b3f # tag: v1.10.1
+        uses: bahmutov/npm-install@ec9e87262db2a1be2ca3ceb2d506c413a220542c # tag: v1.10.5
 
-      - name: Test
-        run: yarn lint && yarn test
+      - name: Lint
+        run: yarn lint
         env:
           CI: true

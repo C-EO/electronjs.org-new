@@ -9,15 +9,15 @@ hide_title: false
 
 Follow the guidelines below for building **Electron itself**, for the purposes of creating custom Electron binaries. For bundling and distributing your app code with the prebuilt Electron binaries, see the [application distribution][application-distribution] guide.
 
-[application-distribution]: latest/tutorial/application-distribution.md
+[application-distribution]: ../tutorial/application-distribution.md
 
 ## Platform prerequisites
 
 Check the build prerequisites for your platform before proceeding
 
-* [macOS](latest/development/build-instructions-macos.md#prerequisites)
-* [Linux](latest/development/build-instructions-linux.md#prerequisites)
-* [Windows](latest/development/build-instructions-windows.md#prerequisites)
+* [macOS](build-instructions-macos.md#prerequisites)
+* [Linux](build-instructions-linux.md#prerequisites)
+* [Windows](build-instructions-windows.md#prerequisites)
 
 ## Build Tools
 
@@ -117,20 +117,49 @@ $ export CHROMIUM_BUILDTOOLS_PATH=`pwd`/buildtools
 On Windows:
 
 ```sh
+# cmd
 $ cd src
 $ set CHROMIUM_BUILDTOOLS_PATH=%cd%\buildtools
+
+# PowerShell
+$ cd src
+$ $env:CHROMIUM_BUILDTOOLS_PATH = "$(Get-Location)\buildtools"
 ```
 
 **To generate Testing build config of Electron:**
+
+On Linux & MacOS
 
 ```sh
 $ gn gen out/Testing --args="import(\"//electron/build/args/testing.gn\")"
 ```
 
+On Windows:
+
+```sh
+# cmd
+$ gn gen out/Testing --args="import(\"//electron/build/args/testing.gn\")"
+
+# PowerShell
+gn gen out/Testing --args="import(\`"//electron/build/args/testing.gn\`")"
+```
+
 **To generate Release build config of Electron:**
+
+On Linux & MacOS
 
 ```sh
 $ gn gen out/Release --args="import(\"//electron/build/args/release.gn\")"
+```
+
+On Windows:
+
+```sh
+# cmd
+$ gn gen out/Release --args="import(\"//electron/build/args/release.gn\")"
+
+# PowerShell
+$ gn gen out/Release --args="import(\`"//electron/build/args/release.gn\`")"
 ```
 
 **Note:** This will generate a `out/Testing` or `out/Release` build directory under `src/` with the testing or release build depending upon the configuration passed above. You can replace `Testing|Release` with another names, but it should be a subdirectory of `out`.
@@ -235,7 +264,7 @@ under `src/` directory.
 $ ninja -C out/Testing electron:node_headers
 ```
 
-You can now [run the tests](latest/development/testing.md#unit-tests).
+You can now [run the tests](testing.md#unit-tests).
 
 If you're debugging something, it can be helpful to pass some extra flags to
 the Electron binary:
@@ -307,3 +336,7 @@ Error: Cannot find module '/Users/<user>/.electron_build_tools/src/e'
 ```
 
 We recommend installing Node through [nvm](https://github.com/nvm-sh/nvm). This allows for easier Node version management, and is often a fix for missing `e` modules.
+
+### RBE authentication randomly fails with "Token not valid"
+
+This could be caused by the local clock time on the machine being off by a small amount. Use [time.is](https://time.is/) to check.

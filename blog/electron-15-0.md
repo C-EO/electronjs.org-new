@@ -2,13 +2,10 @@
 title: Electron 15.0.0
 date: 2021-09-21T00:00:00.000Z
 authors:
-  - name: sofianguy
-    url: 'https://github.com/sofianguy'
-    image_url: 'https://github.com/sofianguy.png?size=96'
-  - name: vertedinde
-    url: 'https://github.com/vertedinde'
-    image_url: 'https://github.com/vertedinde.png?size=96'
+  - sofianguy
+  - VerteDinde
 slug: electron-15-0
+tags: [release]
 ---
 
 Electron 15.0.0 has been released! It includes upgrades to Chromium `94`, V8 `9.4`, and Node.js `16.5.0`. We've added API updates to window.open, bug fixes, and general improvements. Read below for more details!

@@ -9,7 +9,7 @@ hide_title: false
 
 > Submit crash reports to a remote server.
 
-Process: [Main](latest/glossary.md#main-process), [Renderer](latest/glossary.md#renderer-process)
+Process: [Main](../glossary.md#main-process), [Renderer](../glossary.md#renderer-process)
 
 The following is an example of setting up Electron to automatically submit
 crash reports to a remote server:
@@ -66,14 +66,14 @@ The `crashReporter` module has the following methods:
     number of crashes uploaded to 1/hour. Default is `false`.
   * `compress` boolean (optional) - If true, crash reports will be compressed
     and uploaded with `Content-Encoding: gzip`. Default is `true`.
-  * `extra` Record&#60;string, string&#62; (optional) - Extra string key/value
+  * `extra` Record\<string, string\> (optional) - Extra string key/value
     annotations that will be sent along with crash reports that are generated
     in the main process. Only string values are supported. Crashes generated in
     child processes will not contain these extra
     parameters to crash reports generated from child processes, call
     [`addExtraParameter`](#crashreporteraddextraparameterkey-value) from the
     child process.
-  * `globalExtra` Record&#60;string, string&#62; (optional) - Extra string key/value
+  * `globalExtra` Record\<string, string\> (optional) - Extra string key/value
     annotations that will be sent along with any crash reports generated in any
     process. These annotations cannot be changed once the crash reporter has
     been started. If a key is present in both the global extra parameters and
@@ -107,7 +107,7 @@ longer than the maximum length will be truncated.
 
 ### `crashReporter.getLastCrashReport()`
 
-Returns [`CrashReport | null`](latest/api/structures/crash-report.md) - The date and ID of the
+Returns [`CrashReport | null`](structures/crash-report.md) - The date and ID of the
 last crash report. Only crash reports that have been uploaded will be returned;
 even if a crash report is present on disk it will not be returned until it is
 uploaded. In the case that there are no uploaded reports, `null` is returned.
@@ -116,7 +116,7 @@ uploaded. In the case that there are no uploaded reports, `null` is returned.
 
 ### `crashReporter.getUploadedReports()`
 
-Returns [`CrashReport[]`](latest/api/structures/crash-report.md):
+Returns [`CrashReport[]`](structures/crash-report.md):
 
 Returns all uploaded crash reports. Each report contains the date and uploaded
 ID.

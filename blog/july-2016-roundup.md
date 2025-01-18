@@ -1,11 +1,9 @@
 ---
 title: 'July 2016: New Apps and Meetups'
 date: 2016-08-04T00:00:00.000Z
-authors:
-  name: jlord
-  url: 'https://github.com/jlord'
-  image_url: 'https://github.com/jlord.png?size=96'
+authors: jlord
 slug: july-2016-roundup
+tags: [community, showcase]
 ---
 
 We're starting a monthly roundup to highlight activity in the Electron community. Each roundup will feature things like new apps, upcoming meetups, tools, videos, etc.
@@ -36,7 +34,6 @@ If you've made an Electron app or host a meetup, make a [pull request](https://g
 
 ### New Meetups
 
-{: .table .table-ruled .table-full-width .table-with-spacious-first-column .mb-7}
-| | |
-| --- | -- |
+|                                                                                                         |            |
+| ------------------------------------------------------------------------------------------------------- | ---------- |
 | [Electron Open Source Desktop Framework](http://www.meetup.com/Electron-Open-Source-Desktop-Framework/) | London, UK |

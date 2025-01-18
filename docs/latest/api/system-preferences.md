@@ -9,7 +9,7 @@ hide_title: false
 
 > Get system preferences.
 
-Process: [Main](latest/glossary.md#main-process)
+Process: [Main](../glossary.md#main-process), [Utility](../glossary.md#utility-process)
 
 ```js
 const { systemPreferences } = require('electron')
@@ -43,7 +43,7 @@ Returns `boolean` - Whether the Swipe between pages setting is on.
 ### `systemPreferences.postNotification(event, userInfo[, deliverImmediately])` _macOS_
 
 * `event` string
-* `userInfo` Record&#60;string, any&#62;
+* `userInfo` Record\<string, any\>
 * `deliverImmediately` boolean (optional) - `true` to post notifications immediately even when the subscribing app is inactive.
 
 Posts `event` as native notifications of macOS. The `userInfo` is an Object
@@ -52,7 +52,7 @@ that contains the user information dictionary sent along with the notification.
 ### `systemPreferences.postLocalNotification(event, userInfo)` _macOS_
 
 * `event` string
-* `userInfo` Record&#60;string, any&#62;
+* `userInfo` Record\<string, any\>
 
 Posts `event` as native notifications of macOS. The `userInfo` is an Object
 that contains the user information dictionary sent along with the notification.
@@ -60,7 +60,7 @@ that contains the user information dictionary sent along with the notification.
 ### `systemPreferences.postWorkspaceNotification(event, userInfo)` _macOS_
 
 * `event` string
-* `userInfo` Record&#60;string, any&#62;
+* `userInfo` Record\<string, any\>
 
 Posts `event` as native notifications of macOS. The `userInfo` is an Object
 that contains the user information dictionary sent along with the notification.
@@ -70,7 +70,7 @@ that contains the user information dictionary sent along with the notification.
 * `event` string | null
 * `callback` Function
   * `event` string
-  * `userInfo` Record&#60;string, unknown&#62;
+  * `userInfo` Record\<string, unknown\>
   * `object` string
 
 Returns `number` - The ID of this subscription
@@ -99,7 +99,7 @@ If `event` is null, the `NSDistributedNotificationCenter` doesn’t use it as cr
 * `event` string | null
 * `callback` Function
   * `event` string
-  * `userInfo` Record&#60;string, unknown&#62;
+  * `userInfo` Record\<string, unknown\>
   * `object` string
 
 Returns `number` - The ID of this subscription
@@ -114,7 +114,7 @@ If `event` is null, the `NSNotificationCenter` doesn’t use it as criteria for 
 * `event` string | null
 * `callback` Function
   * `event` string
-  * `userInfo` Record&#60;string, unknown&#62;
+  * `userInfo` Record\<string, unknown\>
   * `object` string
 
 Returns `number` - The ID of this subscription
@@ -144,7 +144,7 @@ Same as `unsubscribeNotification`, but removes the subscriber from `NSWorkspace.
 
 ### `systemPreferences.registerDefaults(defaults)` _macOS_
 
-* `defaults` Record&#60;string, string | boolean | number&#62; - a dictionary of (`key: value`) user defaults
+* `defaults` Record\<string, string | boolean | number\> - a dictionary of (`key: value`) user defaults
 
 Add the specified defaults to your application's `NSUserDefaults`.
 
@@ -154,7 +154,7 @@ Add the specified defaults to your application's `NSUserDefaults`.
 * `type` Type - Can be `string`, `boolean`, `integer`, `float`, `double`,
   `url`, `array` or `dictionary`.
 
-Returns [`UserDefaultTypes[Type]`](latest/api/structures/user-default-types.md) - The value of `key` in `NSUserDefaults`.
+Returns [`UserDefaultTypes[Type]`](structures/user-default-types.md) - The value of `key` in `NSUserDefaults`.
 
 Some popular `key` and `type`s are:
 
@@ -392,7 +392,7 @@ It will always return `granted` for `screen` and for all media types on older ve
 
 Returns `Promise<boolean>` - A promise that resolves with `true` if consent was granted and `false` if it was denied. If an invalid `mediaType` is passed, the promise will be rejected. If an access request was denied and later is changed through the System Preferences pane, a restart of the app will be required for the new permissions to take effect. If access has already been requested and denied, it _must_ be changed through the preference pane; an alert will not pop up and the promise will resolve with the existing access status.
 
-**Important:** In order to properly leverage this API, you [must set](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_macos?language=objc) the `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` strings in your app's `Info.plist` file. The values for these keys will be used to populate the permission dialogs so that the user will be properly informed as to the purpose of the permission request. See [Electron Application Distribution](latest/tutorial/application-distribution.md#rebranding-with-downloaded-binaries) for more information about how to set these in the context of Electron.
+**Important:** In order to properly leverage this API, you [must set](https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_macos?language=objc) the `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` strings in your app's `Info.plist` file. The values for these keys will be used to populate the permission dialogs so that the user will be properly informed as to the purpose of the permission request. See [Electron Application Distribution](../tutorial/application-distribution.md#rebranding-with-downloaded-binaries) for more information about how to set these in the context of Electron.
 
 This user consent was not required until macOS 10.14 Mojave, so this method will always return `true` if your system is running 10.13 High Sierra.
 
@@ -408,9 +408,11 @@ Returns an object with system animation settings.
 
 ## Properties
 
-### `systemPreferences.accessibilityDisplayShouldReduceTransparency()` _macOS_
+### `systemPreferences.accessibilityDisplayShouldReduceTransparency` _macOS_ _Deprecated_
 
 A `boolean` property which determines whether the app avoids using semitransparent backgrounds. This maps to [NSWorkspace.accessibilityDisplayShouldReduceTransparency](https://developer.apple.com/documentation/appkit/nsworkspace/1533006-accessibilitydisplayshouldreduce)
+
+**Deprecated:** Use the new [`nativeTheme.prefersReducedTransparency`](native-theme.md#nativethemeprefersreducedtransparency-readonly) API.
 
 ### `systemPreferences.effectiveAppearance` _macOS_ _Readonly_
 

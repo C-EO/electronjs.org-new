@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Plugin } from '@docusaurus/types';
 
 export interface App {
@@ -20,10 +19,10 @@ export interface AppsPluginContent {
   categories: Map<string, App>;
 }
 
-module.exports = async function appsPlugin() {
+export default async function appsPlugin() {
   // TODO: actually use the electron/apps repo as a data source
   const response = await fetch(
-    'https://raw.githubusercontent.com/erickzhao/apps/master/index.json'
+    'https://raw.githubusercontent.com/erickzhao/apps/master/index.json',
   );
   const apps = (await response.json()) as App[];
   const plugin: Plugin<AppsPluginContent> = {
@@ -31,7 +30,6 @@ module.exports = async function appsPlugin() {
     async loadContent() {
       const FAVS = new Set([
         '1password',
-        'agora-flat',
         'asana',
         'discord',
         'figma',
@@ -72,7 +70,7 @@ module.exports = async function appsPlugin() {
               map.set(app.category, [app]);
             }
             return map;
-          }, new Map())
+          }, new Map()),
         ),
       };
     },
@@ -81,11 +79,11 @@ module.exports = async function appsPlugin() {
 
       const appsJsonPath = await createData(
         'apps.json',
-        JSON.stringify(content.apps)
+        JSON.stringify(content.apps),
       );
       const categoriesJsonPath = await createData(
         'categories.json',
-        JSON.stringify(content.categories)
+        JSON.stringify(content.categories),
       );
 
       addRoute({
@@ -100,4 +98,4 @@ module.exports = async function appsPlugin() {
     },
   };
   return plugin;
-};
+}

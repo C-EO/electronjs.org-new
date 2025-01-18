@@ -32,7 +32,7 @@ at [https://update.electronjs.org](https://update.electronjs.org). Its requireme
 - Your app runs on macOS or Windows
 - Your app has a public GitHub repository
 - Builds are published to [GitHub releases][]
-- Builds are [code signed][code-signed]
+- Builds are [code signed][code-signed] **(macOS only)**
 
 At this point, we'll assume that you have already pushed all your
 code to a public GitHub repository.
@@ -152,7 +152,7 @@ command that can handle the version bumping and tagging for you.
 #### Bonus: Publishing in GitHub Actions
 
 Publishing locally can be painful, especially because you can only create distributables
-for your host operating system (i.e. you can't publish a Window `.exe` file from macOS).
+for your host operating system (i.e. you can't publish a Windows `.exe` file from macOS).
 
 A solution for this would be to publish your app via automation workflows
 such as [GitHub Actions][], which can run tasks in the
@@ -218,12 +218,12 @@ rest of our docs and happy developing! If you have questions, please stop by our
 
 :::
 
-[autoupdater]: latest/api/auto-updater.md
-[code-signed]: latest/tutorial/code-signing.md
+[autoupdater]: ../api/auto-updater.md
+[code-signed]: ./code-signing.md
 [discord server]: https://discord.gg/electronjs
 [electron fiddle]: https://www.electronjs.org/fiddle
-[fiddle-build]: https://github.com/electron/fiddle/blob/main/.github/workflows/build.yaml
-[fiddle-forge-config]: https://github.com/electron/fiddle/blob/main/forge.config.js
+[fiddle-build]: https://github.com/electron/fiddle/blob/main/.circleci/config.yml
+[fiddle-forge-config]: https://github.com/electron/fiddle/blob/main/forge.config.ts
 [github actions]: https://github.com/features/actions
 [github publisher]: https://www.electronforge.io/config/publishers/github
 [github releases]: https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
@@ -233,13 +233,13 @@ rest of our docs and happy developing! If you have questions, please stop by our
 [publisher]: https://www.electronforge.io/config/publishers
 [`publishergithubconfig`]: https://js.electronforge.io/interfaces/_electron_forge_publisher_github.PublisherGitHubConfig.html
 [`update-electron-app`]: https://github.com/electron/update-electron-app
-[update-server]: latest/tutorial/updates.md
+[update-server]: ./updates.md
 
 <!-- Tutorial links -->
 
-[prerequisites]: latest/tutorial/tutorial-1-prerequisites.md
-[building your first app]: latest/tutorial/tutorial-2-first-app.md
-[preload]: latest/tutorial/tutorial-3-preload.md
-[features]: latest/tutorial/tutorial-4-adding-features.md
-[packaging]: latest/tutorial/tutorial-5-packaging.md
-[updates]: latest/tutorial/tutorial-6-publishing-updating.md
+[prerequisites]: tutorial-1-prerequisites.md
+[building your first app]: tutorial-2-first-app.md
+[preload]: tutorial-3-preload.md
+[features]: tutorial-4-adding-features.md
+[packaging]: tutorial-5-packaging.md
+[updates]: tutorial-6-publishing-updating.md

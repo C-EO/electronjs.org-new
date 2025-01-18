@@ -5,11 +5,10 @@ slug: asar-archives
 hide_title: false
 ---
 
-After creating an [application distribution](latest/tutorial/application-distribution.md), the
-app's source code are usually bundled into an [ASAR
-archive](https://github.com/electron/asar), which is a simple extensive archive
-format designed for Electron apps. By bundling the app we can mitigate issues
-around long path names on Windows, speed up `require` and conceal your source
+After creating an [application distribution](application-distribution.md), the
+app's source code are usually bundled into an [ASAR archive](https://github.com/electron/asar),
+which is a simple extensive archive format designed for Electron apps. By bundling the app
+we can mitigate issues around long path names on Windows, speed up `require` and conceal your source
 code from cursory inspection.
 
 The bundled app runs in a virtual file system and most APIs would just work

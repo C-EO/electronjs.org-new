@@ -8,10 +8,9 @@ authors:
   - name: sindresorhus
     url: 'https://github.com/sindresorhus'
     image_url: 'https://github.com/sindresorhus.png?size=96'
-  - name: zeke
-    url: 'https://github.com/zeke'
-    image_url: 'https://github.com/zeke.png?size=96'
+  - zeke
 slug: kap
+tags: [community, showcase]
 ---
 
 The Electron community is growing quickly, and people are creating powerful

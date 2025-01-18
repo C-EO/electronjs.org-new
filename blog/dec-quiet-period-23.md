@@ -5,10 +5,9 @@ authors:
   - name: PlaineKevin
     url: 'https://github.com/PlaineKevin'
     image_url: 'https://github.com/PlaineKevin.png?size=96'
-  - name: erickzhao
-    url: 'https://github.com/erickzhao'
-    image_url: 'https://github.com/erickzhao.png?size=96'
+  - erickzhao
 slug: dec-quiet-period-23
+tags: [news]
 ---
 
 The Electron project will pause for the month of December 2023, then return to full speed in

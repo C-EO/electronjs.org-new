@@ -9,7 +9,7 @@ hide_title: false
 
 > Collect tracing data from Chromium to find performance bottlenecks and slow operations.
 
-Process: [Main](latest/glossary.md#main-process)
+Process: [Main](../glossary.md#main-process)
 
 This module does not include a web interface. To view recorded traces, use
 [trace viewer][], available at `chrome://tracing` in Chrome.
@@ -42,15 +42,15 @@ The `contentTracing` module has the following methods:
 Returns `Promise<string[]>` - resolves with an array of category groups once all child processes have acknowledged the `getCategories` request
 
 Get a set of category groups. The category groups can change as new code paths
-are reached. See also the [list of built-in tracing
-categories](https://chromium.googlesource.com/chromium/src/+/main/base/trace_event/builtin_categories.h).
+are reached. See also the
+[list of built-in tracing categories](https://chromium.googlesource.com/chromium/src/+/main/base/trace_event/builtin_categories.h).
 
 > **NOTE:** Electron adds a non-default tracing category called `"electron"`.
 > This category can be used to capture Electron-specific tracing events.
 
 ### `contentTracing.startRecording(options)`
 
-* `options` ([TraceConfig](latest/api/structures/trace-config.md) | [TraceCategoriesAndOptions](latest/api/structures/trace-categories-and-options.md))
+* `options` ([TraceConfig](structures/trace-config.md) | [TraceCategoriesAndOptions](structures/trace-categories-and-options.md))
 
 Returns `Promise<void>` - resolved once all child processes have acknowledged the `startRecording` request.
 

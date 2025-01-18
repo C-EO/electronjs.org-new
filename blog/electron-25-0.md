@@ -2,13 +2,10 @@
 title: Electron 25.0.0
 date: 2023-05-30T00:00:00.000Z
 authors:
-  - name: georgexu99
-    url: 'https://github.com/georgexu99'
-    image_url: 'https://github.com/georgexu99.png?size=96'
-  - name: vertedinde
-    url: 'https://github.com/vertedinde'
-    image_url: 'https://github.com/vertedinde.png?size=96'
+  - georgexu99
+  - VerteDinde
 slug: electron-25-0
+tags: [release]
 ---
 
 Electron 25.0.0 has been released! It includes upgrades to Chromium `114`, V8 `11.4`, and Node.js `18.15.0`. Read below for more details!
@@ -58,7 +55,7 @@ protocol.registerBufferProtocol('some-protocol', () => {
 protocol.handle('some-protocol', () => {
   return new Response(
     Buffer.from('<h5>Response</h5>'), // Could also be a string or ReadableStream.
-    { headers: { 'content-type': 'text/html' } }
+    { headers: { 'content-type': 'text/html' } },
   );
 });
 ```

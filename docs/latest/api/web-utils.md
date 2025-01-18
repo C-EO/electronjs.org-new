@@ -9,7 +9,7 @@ hide_title: false
 
 > A utility layer to interact with Web API objects (Files, Blobs, etc.)
 
-Process: [Renderer](latest/glossary.md#renderer-process)
+Process: [Renderer](../glossary.md#renderer-process)
 
 ## Methods
 
@@ -21,7 +21,7 @@ The `webUtils` module has the following methods:
 
 Returns `string` - The file system path that this `File` object points to. In the case where the object passed in is not a `File` object an exception is thrown. In the case where the File object passed in was constructed in JS and is not backed by a file on disk an empty string is returned.
 
-This method superceded the previous augmentation to the `File` object with the `path` property.  An example is included below.
+This method superseded the previous augmentation to the `File` object with the `path` property.  An example is included below.
 
 ```js
 // Before

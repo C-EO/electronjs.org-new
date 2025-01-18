@@ -2,13 +2,10 @@
 title: Electron 16.0.0
 date: 2021-11-16T00:00:00.000Z
 authors:
-  - name: sofianguy
-    url: 'https://github.com/sofianguy'
-    image_url: 'https://github.com/sofianguy.png?size=96'
-  - name: ckerr
-    url: 'https://github.com/ckerr'
-    image_url: 'https://github.com/ckerr.png?size=96'
+  - sofianguy
+  - ckerr
 slug: electron-16-0
+tags: [release]
 ---
 
 Electron 16.0.0 has been released! It includes upgrades to Chromium `96`, V8 `9.6`, and Node.js `16.9.1`. Read below for more details!

@@ -1,11 +1,9 @@
 ---
 title: Electron's New Internationalized Website
 date: 2017-11-13T00:00:00.000Z
-authors:
-  name: zeke
-  url: 'https://github.com/zeke'
-  image_url: 'https://github.com/zeke.png?size=96'
+authors: zeke
 slug: new-website
+tags: [website]
 ---
 
 Electron has a new website at [electronjs.org]! We've replaced
@@ -26,8 +24,8 @@ with GitHub, opening and updating pull requests automatically as content is tran
 Though we've been working quietly on this effort so far,
 over 75 Electron community members have already discovered the project
 organically and joined in the effort to internationalize the website and
-translate Electron's docs into over 20 languages. We are seeing [daily
-contributions](https://github.com/electron/electron-i18n/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aglotbot%20) from people all over the world, with translations for
+translate Electron's docs into over 20 languages. We are seeing
+[daily contributions](https://github.com/electron/electron-i18n/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aglotbot%20) from people all over the world, with translations for
 languages like French, Vietnamese, Indonesian, and Chinese leading the way.
 
 To choose your language and view translation progress, visit [electronjs.org/languages](https://electronjs.org/languages)

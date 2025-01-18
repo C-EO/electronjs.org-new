@@ -2,13 +2,10 @@
 title: Electron 8.0.0
 date: 2020-02-04T00:00:00.000Z
 authors:
-  - name: jkleinsc
-    url: 'https://github.com/jkleinsc'
-    image_url: 'https://github.com/jkleinsc.png?size=96'
-  - name: sofianguy
-    url: 'https://github.com/sofianguy'
-    image_url: 'https://github.com/sofianguy.png?size=96'
+  - jkleinsc
+  - sofianguy
 slug: electron-8-0
+tags: [release]
 ---
 
 Electron 8.0.0 has been released! It includes upgrades to Chromium `80`, V8 `8.0`, and Node.js `12.13.0`. We've added Chrome's built-in spellchecker, and much more!

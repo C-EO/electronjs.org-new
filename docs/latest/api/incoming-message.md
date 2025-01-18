@@ -9,7 +9,7 @@ hide_title: false
 
 > Handle responses to HTTP/HTTPS requests.
 
-Process: [Main](latest/glossary.md#main-process), [Utility](latest/glossary.md#utility-process)<br />
+Process: [Main](../glossary.md#main-process), [Utility](../glossary.md#utility-process)<br />
 _This class is not exported from the `'electron'` module. It is only available as a return value of other methods in the Electron API._
 
 `IncomingMessage` implements the [Readable Stream](https://nodejs.org/api/stream.html#stream_readable_streams)
@@ -38,7 +38,7 @@ Emitted when a request has been canceled during an ongoing HTTP transaction.
 
 Returns:
 
-`error` Error - Typically holds an error string identifying failure root cause.
+* `error` Error - Typically holds an error string identifying failure root cause.
 
 Emitted when an error was encountered while streaming response data events. For
 instance, if the server closes the underlying while the response is still

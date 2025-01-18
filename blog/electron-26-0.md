@@ -1,11 +1,9 @@
 ---
 title: Electron 26.0.0
 date: 2023-08-15T00:00:00.000Z
-authors:
-  - name: vertedinde
-    url: 'https://github.com/vertedinde'
-    image_url: 'https://github.com/vertedinde.png?size=96'
+authors: VerteDinde
 slug: electron-26-0
+tags: [release]
 ---
 
 Electron 26.0.0 has been released! It includes upgrades to Chromium `116.0.5845.62`, V8 `11.2`, and Node.js `18.16.1`. Read below for more details!

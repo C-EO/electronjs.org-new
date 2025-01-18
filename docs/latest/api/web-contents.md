@@ -9,11 +9,11 @@ hide_title: false
 
 > Render and control web pages.
 
-Process: [Main](latest/glossary.md#main-process)
+Process: [Main](../glossary.md#main-process)
 
 `webContents` is an [EventEmitter][event-emitter].
 It is responsible for rendering and controlling a web page and is a property of
-the [`BrowserWindow`](latest/api/browser-window.md) object. An example of accessing the
+the [`BrowserWindow`](browser-window.md) object. An example of accessing the
 `webContents` object:
 
 ```js
@@ -32,15 +32,15 @@ Several events can be used to monitor navigations as they occur within a `webCon
 
 ### Document Navigations
 
-When a `webContents` navigates to another page (as opposed to an [in-page navigation](latest/api/web-contents.md#in-page-navigation)), the following events will be fired.
+When a `webContents` navigates to another page (as opposed to an [in-page navigation](web-contents.md#in-page-navigation)), the following events will be fired.
 
-* [`did-start-navigation`](latest/api/web-contents.md#event-did-start-navigation)
-* [`will-frame-navigate`](latest/api/web-contents.md#event-will-frame-navigate)
-* [`will-navigate`](latest/api/web-contents.md#event-will-navigate) (only fired when main frame navigates)
-* [`will-redirect`](latest/api/web-contents.md#event-will-redirect) (only fired when a redirect happens during navigation)
-* [`did-redirect-navigation`](latest/api/web-contents.md#event-did-redirect-navigation) (only fired when a redirect happens during navigation)
-* [`did-frame-navigate`](latest/api/web-contents.md#event-did-frame-navigate)
-* [`did-navigate`](latest/api/web-contents.md#event-did-navigate) (only fired when main frame navigates)
+* [`did-start-navigation`](web-contents.md#event-did-start-navigation)
+* [`will-frame-navigate`](web-contents.md#event-will-frame-navigate)
+* [`will-navigate`](web-contents.md#event-will-navigate) (only fired when main frame navigates)
+* [`will-redirect`](web-contents.md#event-will-redirect) (only fired when a redirect happens during navigation)
+* [`did-redirect-navigation`](web-contents.md#event-did-redirect-navigation) (only fired when a redirect happens during navigation)
+* [`did-frame-navigate`](web-contents.md#event-did-frame-navigate)
+* [`did-navigate`](web-contents.md#event-did-navigate) (only fired when main frame navigates)
 
 Subsequent events will not fire if `event.preventDefault()` is called on any of the cancellable events.
 
@@ -48,13 +48,13 @@ Subsequent events will not fire if `event.preventDefault()` is called on any of 
 
 In-page navigations don't cause the page to reload, but instead navigate to a location within the current page. These events are not cancellable. For an in-page navigations, the following events will fire in this order:
 
-* [`did-start-navigation`](latest/api/web-contents.md#event-did-start-navigation)
-* [`did-navigate-in-page`](latest/api/web-contents.md#event-did-navigate-in-page)
+* [`did-start-navigation`](web-contents.md#event-did-start-navigation)
+* [`did-navigate-in-page`](web-contents.md#event-did-navigate-in-page)
 
 ### Frame Navigation
 
-The [`will-navigate`](latest/api/web-contents.md#event-will-navigate) and [`did-navigate`](latest/api/web-contents.md#event-did-navigate) events only fire when the [mainFrame](latest/api/web-contents.md#contentsmainframe-readonly) navigates.
-If you want to also observe navigations in `<iframe>`s, use [`will-frame-navigate`](latest/api/web-contents.md#event-will-frame-navigate) and [`did-frame-navigate`](latest/api/web-contents.md#event-did-frame-navigate) events.
+The [`will-navigate`](web-contents.md#event-will-navigate) and [`did-navigate`](web-contents.md#event-did-navigate) events only fire when the [mainFrame](web-contents.md#contentsmainframe-readonly) navigates.
+If you want to also observe navigations in `<iframe>`s, use [`will-frame-navigate`](web-contents.md#event-will-frame-navigate) and [`did-frame-navigate`](web-contents.md#event-did-frame-navigate) events.
 
 ## Methods
 
@@ -113,7 +113,7 @@ async function lookupTargetId (browserWindow) {
 
 > Render and control the contents of a BrowserWindow instance.
 
-Process: [Main](latest/glossary.md#main-process)<br />
+Process: [Main](../glossary.md#main-process)<br />
 _This class is not exported from the `'electron'` module. It is only available as a return value of other methods in the Electron API._
 
 ### Instance Events
@@ -201,7 +201,7 @@ Emitted when page receives favicon urls.
 Returns:
 
 * `event` Event
-* `bounds` [Rectangle](latest/api/structures/rectangle.md) - requested new content bounds
+* `bounds` [Rectangle](structures/rectangle.md) - requested new content bounds
 
 Emitted when the page calls `window.moveTo`, `window.resizeTo` or related APIs.
 
@@ -217,16 +217,16 @@ Returns:
   * `url` string - URL for the created window.
   * `frameName` string - Name given to the created window in the
      `window.open()` call.
-  * `options` [BrowserWindowConstructorOptions](latest/api/structures/browser-window-options.md) - The options used to create the
+  * `options` [BrowserWindowConstructorOptions](structures/browser-window-options.md) - The options used to create the
     BrowserWindow. They are merged in increasing precedence: parsed options
     from the `features` string from `window.open()`, security-related
     webPreferences inherited from the parent, and options given by
-    [`webContents.setWindowOpenHandler`](latest/api/web-contents.md#contentssetwindowopenhandlerhandler).
+    [`webContents.setWindowOpenHandler`](web-contents.md#contentssetwindowopenhandlerhandler).
     Unrecognized options are not filtered out.
-  * `referrer` [Referrer](latest/api/structures/referrer.md) - The referrer that will be
+  * `referrer` [Referrer](structures/referrer.md) - The referrer that will be
     passed to the new window. May or may not result in the `Referer` header
     being sent, depending on the referrer policy.
-  * `postBody` [PostBody](latest/api/structures/post-body.md) (optional) - The post data
+  * `postBody` [PostBody](structures/post-body.md) (optional) - The post data
     that will be sent to the new window, along with the appropriate headers
     that will be set. If no post data is to be sent, the value will be `null`.
     Only defined when the window is being created by a form that set
@@ -236,21 +236,22 @@ Returns:
 
 Emitted _after_ successful creation of a window via `window.open` in the renderer.
 Not emitted if the creation of the window is canceled from
-[`webContents.setWindowOpenHandler`](latest/api/web-contents.md#contentssetwindowopenhandlerhandler).
+[`webContents.setWindowOpenHandler`](web-contents.md#contentssetwindowopenhandlerhandler).
 
-See [`window.open()`](latest/api/window-open.md) for more details and how to use this in conjunction with `webContents.setWindowOpenHandler`.
+See [`window.open()`](window-open.md) for more details and how to use this in conjunction with `webContents.setWindowOpenHandler`.
 
 #### Event: 'will-navigate'
 
 Returns:
 
-* `details` Event&#60;&#62;
+* `details` Event\<\>
   * `url` string - The URL the frame is navigating to.
   * `isSameDocument` boolean - This event does not fire for same document navigations using window.history api and reference fragment navigations.
     This property is always set to `false` for this event.
   * `isMainFrame` boolean - True if the navigation is taking place in a main frame.
-  * `frame` WebFrameMain - The frame to be navigated.
-  * `initiator` WebFrameMain (optional) - The frame which initiated the
+  * `frame` WebFrameMain | null - The frame to be navigated.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
+  * `initiator` WebFrameMain | null (optional) - The frame which initiated the
     navigation, which can be a parent frame (e.g. via `window.open` with a
     frame's name), or null if the navigation was not initiated by a frame. This
     can also be null if the initiating frame was deleted before the event was
@@ -277,13 +278,14 @@ Calling `event.preventDefault()` will prevent the navigation.
 
 Returns:
 
-* `details` Event&#60;&#62;
+* `details` Event\<\>
   * `url` string - The URL the frame is navigating to.
   * `isSameDocument` boolean - This event does not fire for same document navigations using window.history api and reference fragment navigations.
     This property is always set to `false` for this event.
   * `isMainFrame` boolean - True if the navigation is taking place in a main frame.
-  * `frame` WebFrameMain - The frame to be navigated.
-  * `initiator` WebFrameMain (optional) - The frame which initiated the
+  * `frame` WebFrameMain | null - The frame to be navigated.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
+  * `initiator` WebFrameMain | null (optional) - The frame which initiated the
     navigation, which can be a parent frame (e.g. via `window.open` with a
     frame's name), or null if the navigation was not initiated by a frame. This
     can also be null if the initiating frame was deleted before the event was
@@ -307,14 +309,15 @@ Calling `event.preventDefault()` will prevent the navigation.
 
 Returns:
 
-* `details` Event&#60;&#62;
+* `details` Event\<\>
   * `url` string - The URL the frame is navigating to.
   * `isSameDocument` boolean - Whether the navigation happened without changing
     document. Examples of same document navigations are reference fragment
     navigations, pushState/replaceState, and same page history navigation.
   * `isMainFrame` boolean - True if the navigation is taking place in a main frame.
-  * `frame` WebFrameMain - The frame to be navigated.
-  * `initiator` WebFrameMain (optional) - The frame which initiated the
+  * `frame` WebFrameMain | null - The frame to be navigated.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
+  * `initiator` WebFrameMain | null (optional) - The frame which initiated the
     navigation, which can be a parent frame (e.g. via `window.open` with a
     frame's name), or null if the navigation was not initiated by a frame. This
     can also be null if the initiating frame was deleted before the event was
@@ -331,14 +334,15 @@ Emitted when any frame (including main) starts navigating.
 
 Returns:
 
-* `details` Event&#60;&#62;
+* `details` Event\<\>
   * `url` string - The URL the frame is navigating to.
   * `isSameDocument` boolean - Whether the navigation happened without changing
     document. Examples of same document navigations are reference fragment
     navigations, pushState/replaceState, and same page history navigation.
   * `isMainFrame` boolean - True if the navigation is taking place in a main frame.
-  * `frame` WebFrameMain - The frame to be navigated.
-  * `initiator` WebFrameMain (optional) - The frame which initiated the
+  * `frame` WebFrameMain | null - The frame to be navigated.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
+  * `initiator` WebFrameMain | null (optional) - The frame which initiated the
     navigation, which can be a parent frame (e.g. via `window.open` with a
     frame's name), or null if the navigation was not initiated by a frame. This
     can also be null if the initiating frame was deleted before the event was
@@ -362,14 +366,15 @@ redirect).
 
 Returns:
 
-* `details` Event&#60;&#62;
+* `details` Event\<\>
   * `url` string - The URL the frame is navigating to.
   * `isSameDocument` boolean - Whether the navigation happened without changing
     document. Examples of same document navigations are reference fragment
     navigations, pushState/replaceState, and same page history navigation.
   * `isMainFrame` boolean - True if the navigation is taking place in a main frame.
-  * `frame` WebFrameMain - The frame to be navigated.
-  * `initiator` WebFrameMain (optional) - The frame which initiated the
+  * `frame` WebFrameMain | null - The frame to be navigated.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
+  * `initiator` WebFrameMain | null (optional) - The frame which initiated the
     navigation, which can be a parent frame (e.g. via `window.open` with a
     frame's name), or null if the navigation was not initiated by a frame. This
     can also be null if the initiating frame was deleted before the event was
@@ -472,7 +477,7 @@ win.webContents.on('will-prevent-unload', (event) => {
 Returns:
 
 * `event` Event
-* `details` [RenderProcessGoneDetails](latest/api/structures/render-process-gone-details.md)
+* `details` [RenderProcessGoneDetails](structures/render-process-gone-details.md)
 
 Emitted when the renderer process unexpectedly disappears.  This is normally
 because it was crashed or killed.
@@ -504,10 +509,10 @@ Emitted when `webContents` is destroyed.
 Returns:
 
 * `event` Event
-* `inputEvent` [InputEvent](latest/api/structures/input-event.md)
+* `inputEvent` [InputEvent](structures/input-event.md)
 
 Emitted when an input event is sent to the WebContents. See
-[InputEvent](latest/api/structures/input-event.md) for details.
+[InputEvent](structures/input-event.md) for details.
 
 #### Event: 'before-input-event'
 
@@ -525,7 +530,7 @@ Returns:
   * `alt` boolean - Equivalent to [KeyboardEvent.altKey][keyboardevent].
   * `meta` boolean - Equivalent to [KeyboardEvent.metaKey][keyboardevent].
   * `location` number - Equivalent to [KeyboardEvent.location][keyboardevent].
-  * `modifiers` string[] - See [InputEvent.modifiers](latest/api/structures/input-event.md).
+  * `modifiers` string[] - See [InputEvent.modifiers](structures/input-event.md).
 
 Emitted before dispatching the `keydown` and `keyup` events in the page.
 Calling `event.preventDefault` will prevent the page `keydown`/`keyup` events
@@ -589,6 +594,15 @@ Returns:
 
 Emitted when a link is clicked in DevTools or 'Open in new tab' is selected for a link in its context menu.
 
+#### Event: 'devtools-search-query'
+
+Returns:
+
+* `event` Event
+* `query` string - text to query for.
+
+Emitted when 'Search' is selected for text in its context menu.
+
 #### Event: 'devtools-opened'
 
 Emitted when DevTools is opened.
@@ -608,15 +622,14 @@ Returns:
 * `event` Event
 * `url` string
 * `error` string - The error code.
-* `certificate` [Certificate](latest/api/structures/certificate.md)
+* `certificate` [Certificate](structures/certificate.md)
 * `callback` Function
   * `isTrusted` boolean - Indicates whether the certificate can be considered trusted.
 * `isMainFrame` boolean
 
 Emitted when failed to verify the `certificate` for `url`.
 
-The usage is the same with [the `certificate-error` event of
-`app`](latest/api/app.md#event-certificate-error).
+The usage is the same with [the `certificate-error` event of `app`](app.md#event-certificate-error).
 
 #### Event: 'select-client-certificate'
 
@@ -624,14 +637,13 @@ Returns:
 
 * `event` Event
 * `url` URL
-* `certificateList` [Certificate[]](latest/api/structures/certificate.md)
+* `certificateList` [Certificate[]](structures/certificate.md)
 * `callback` Function
-  * `certificate` [Certificate](latest/api/structures/certificate.md) - Must be a certificate from the given list.
+  * `certificate` [Certificate](structures/certificate.md) - Must be a certificate from the given list.
 
 Emitted when a client certificate is requested.
 
-The usage is the same with [the `select-client-certificate` event of
-`app`](latest/api/app.md#event-select-client-certificate).
+The usage is the same with [the `select-client-certificate` event of `app`](app.md#event-select-client-certificate).
 
 #### Event: 'login'
 
@@ -652,7 +664,7 @@ Returns:
 
 Emitted when `webContents` wants to do basic auth.
 
-The usage is the same with [the `login` event of `app`](latest/api/app.md#event-login).
+The usage is the same with [the `login` event of `app`](app.md#event-login).
 
 #### Event: 'found-in-page'
 
@@ -681,7 +693,7 @@ Emitted when media is paused or done playing.
 
 Returns:
 
-* `event` Event&#60;&#62;
+* `event` Event\<\>
   * `audible` boolean - True if one or more frames or child `webContents` are emitting audio.
 
 Emitted when media becomes audible or inaudible.
@@ -715,10 +727,10 @@ Returns:
 
 * `event` Event
 * `type` string
-* `image` [NativeImage](latest/api/native-image.md) (optional)
+* `image` [NativeImage](native-image.md) (optional)
 * `scale` Float (optional) - scaling factor for the custom cursor.
-* `size` [Size](latest/api/structures/size.md) (optional) - the size of the `image`.
-* `hotspot` [Point](latest/api/structures/point.md) (optional) - coordinates of the custom cursor's hotspot.
+* `size` [Size](structures/size.md) (optional) - the size of the `image`.
+* `hotspot` [Point](structures/point.md) (optional) - coordinates of the custom cursor's hotspot.
 
 Emitted when the cursor's type changes. The `type` parameter can be `pointer`,
 `crosshair`, `hand`, `text`, `wait`, `help`, `e-resize`, `n-resize`, `ne-resize`,
@@ -732,7 +744,7 @@ Emitted when the cursor's type changes. The `type` parameter can be `pointer`,
 or `default`.
 
 If the `type` parameter is `custom`, the `image` parameter will hold the custom
-cursor image in a [`NativeImage`](latest/api/native-image.md), and `scale`, `size` and `hotspot` will hold
+cursor image in a [`NativeImage`](native-image.md), and `scale`, `size` and `hotspot` will hold
 additional information about the custom cursor.
 
 #### Event: 'context-menu'
@@ -743,7 +755,8 @@ Returns:
 * `params` Object
   * `x` Integer - x coordinate.
   * `y` Integer - y coordinate.
-  * `frame` WebFrameMain - Frame from which the context menu was invoked.
+  * `frame` WebFrameMain | null - Frame from which the context menu was invoked.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
   * `linkURL` string - URL of the link that encloses the node the context menu
     was invoked on.
   * `linkText` string - Text associated with the link. May be an empty
@@ -767,9 +780,9 @@ Returns:
     invoked on.
   * `suggestedFilename` string - Suggested filename to be used when saving file through 'Save
     Link As' option of context menu.
-  * `selectionRect` [Rectangle](latest/api/structures/rectangle.md) - Rect representing the coordinates in the document space of the selection.
+  * `selectionRect` [Rectangle](structures/rectangle.md) - Rect representing the coordinates in the document space of the selection.
   * `selectionStartOffset` number - Start position of the selection text.
-  * `referrerPolicy` [Referrer](latest/api/structures/referrer.md) - The referrer policy of the frame on which the menu is invoked.
+  * `referrerPolicy` [Referrer](structures/referrer.md) - The referrer policy of the frame on which the menu is invoked.
   * `misspelledWord` string - The misspelled word under the cursor, if any.
   * `dictionarySuggestions` string[] - An array of suggested words to show the
     user to replace the `misspelledWord`.  Only available if there is a misspelled
@@ -785,9 +798,6 @@ Returns:
     `input-text`, `input-time`, `input-url`, `input-week`, `output`, `reset-button`,
     `select-list`, `select-list`, `select-multiple`, `select-one`, `submit-button`,
     and `text-area`,
-  * `inputFieldType` string _Deprecated_ - If the context menu was invoked on an
-    input field, the type of that field. Possible values include `none`,
-    `plainText`, `password`, `other`.
   * `spellcheckEnabled` boolean - If the context is editable, whether or not spellchecking is enabled.
   * `menuSourceType` string - Input source that invoked the context menu.
     Can be `none`, `mouse`, `keyboard`, `touch`, `touchMenu`, `longPress`, `longTap`, `touchHandle`, `stylus`, `adjustSelection`, or `adjustSelectionReset`.
@@ -826,7 +836,7 @@ Emitted when there is a new context menu that needs to be handled.
 Returns:
 
 * `event` Event
-* `devices` [BluetoothDevice[]](latest/api/structures/bluetooth-device.md)
+* `devices` [BluetoothDevice[]](structures/bluetooth-device.md)
 * `callback` Function
   * `deviceId` string
 
@@ -872,12 +882,12 @@ app.whenReady().then(() => {
 
 Returns:
 
-* `event` Event
-* `dirtyRect` [Rectangle](latest/api/structures/rectangle.md)
-* `image` [NativeImage](latest/api/native-image.md) - The image data of the whole frame.
+* `details` Event\<\>
+  * `texture` [OffscreenSharedTexture](structures/offscreen-shared-texture.md) (optional) _Experimental_ - The GPU shared texture of the frame, when `webPreferences.offscreen.useSharedTexture` is `true`.
+* `dirtyRect` [Rectangle](structures/rectangle.md)
+* `image` [NativeImage](native-image.md) - The image data of the whole frame.
 
-Emitted when a new frame is generated. Only the dirty area is passed in the
-buffer.
+Emitted when a new frame is generated. Only the dirty area is passed in the buffer.
 
 ```js
 const { BrowserWindow } = require('electron')
@@ -885,6 +895,33 @@ const { BrowserWindow } = require('electron')
 const win = new BrowserWindow({ webPreferences: { offscreen: true } })
 win.webContents.on('paint', (event, dirty, image) => {
   // updateBitmap(dirty, image.getBitmap())
+})
+win.loadURL('https://github.com')
+```
+
+When using shared texture (set `webPreferences.offscreen.useSharedTexture` to `true`) feature, you can pass the texture handle to external rendering pipeline without the overhead of
+copying data between CPU and GPU memory, with Chromium's hardware acceleration support. This feature is helpful for high-performance rendering scenarios.
+
+Only a limited number of textures can exist at the same time, so it's important that you call `texture.release()` as soon as you're done with the texture.
+By managing the texture lifecycle by yourself, you can safely pass the `texture.textureInfo` to other processes through IPC.
+
+```js
+const { BrowserWindow } = require('electron')
+
+const win = new BrowserWindow({ webPreferences: { offscreen: { useSharedTexture: true } } })
+win.webContents.on('paint', async (e, dirty, image) => {
+  if (e.texture) {
+    // By managing lifecycle yourself, you can handle the event in async handler or pass the `e.texture.textureInfo`
+    // to other processes (not `e.texture`, the `e.texture.release` function is not passable through IPC).
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    // You can send the native texture handle to native code for importing into your rendering pipeline.
+    // For example: https://github.com/electron/electron/tree/main/spec/fixtures/native-addon/osr-gpu
+    // importTextureHandle(dirty, e.texture.textureInfo)
+
+    // You must call `e.texture.release()` as soon as possible, before the underlying frame pool is drained.
+    e.texture.release()
+  }
 })
 win.loadURL('https://github.com')
 ```
@@ -898,10 +935,10 @@ Emitted when the devtools window instructs the webContents to reload
 Returns:
 
 * `event` Event
-* `webPreferences` [WebPreferences](latest/api/structures/web-preferences.md) - The web preferences that will be used by the guest
+* `webPreferences` [WebPreferences](structures/web-preferences.md) - The web preferences that will be used by the guest
   page. This object can be modified to adjust the preferences for the guest
   page.
-* `params` Record&#60;string, string&#62; - The other `<webview>` parameters such as the `src` URL.
+* `params` Record\<string, string\> - The other `<webview>` parameters such as the `src` URL.
   This object can be modified to adjust the parameters of the guest page.
 
 Emitted when a `<webview>`'s web contents is being attached to this web
@@ -947,32 +984,32 @@ Emitted when the preload script `preloadPath` throws an unhandled exception `err
 
 Returns:
 
-* `event` [IpcMainEvent](latest/api/structures/ipc-main-event.md)
+* `event` [IpcMainEvent](structures/ipc-main-event.md)
 * `channel` string
 * `...args` any[]
 
 Emitted when the renderer process sends an asynchronous message via `ipcRenderer.send()`.
 
-See also [`webContents.ipc`](#contentsipc-readonly), which provides an [`IpcMain`](latest/api/ipc-main.md)-like interface for responding to IPC messages specifically from this WebContents.
+See also [`webContents.ipc`](#contentsipc-readonly), which provides an [`IpcMain`](ipc-main.md)-like interface for responding to IPC messages specifically from this WebContents.
 
 #### Event: 'ipc-message-sync'
 
 Returns:
 
-* `event` [IpcMainEvent](latest/api/structures/ipc-main-event.md)
+* `event` [IpcMainEvent](structures/ipc-main-event.md)
 * `channel` string
 * `...args` any[]
 
 Emitted when the renderer process sends a synchronous message via `ipcRenderer.sendSync()`.
 
-See also [`webContents.ipc`](#contentsipc-readonly), which provides an [`IpcMain`](latest/api/ipc-main.md)-like interface for responding to IPC messages specifically from this WebContents.
+See also [`webContents.ipc`](#contentsipc-readonly), which provides an [`IpcMain`](ipc-main.md)-like interface for responding to IPC messages specifically from this WebContents.
 
 #### Event: 'preferred-size-changed'
 
 Returns:
 
 * `event` Event
-* `preferredSize` [Size](latest/api/structures/size.md) - The minimum size needed to
+* `preferredSize` [Size](structures/size.md) - The minimum size needed to
   contain the layout of the document—without requiring scrolling.
 
 Emitted when the `WebContents` preferred size has changed.
@@ -986,9 +1023,10 @@ Returns:
 
 * `event` Event
 * `details` Object
-  * `frame` WebFrameMain
+  * `frame` WebFrameMain | null - The created frame.
+    May be `null` if accessed after the frame has either navigated or been destroyed.
 
-Emitted when the [mainFrame](latest/api/web-contents.md#contentsmainframe-readonly), an `<iframe>`, or a nested `<iframe>` is loaded within the page.
+Emitted when the [mainFrame](web-contents.md#contentsmainframe-readonly), an `<iframe>`, or a nested `<iframe>` is loaded within the page.
 
 ### Instance Methods
 
@@ -996,16 +1034,16 @@ Emitted when the [mainFrame](latest/api/web-contents.md#contentsmainframe-readon
 
 * `url` string
 * `options` Object (optional)
-  * `httpReferrer` (string | [Referrer](latest/api/structures/referrer.md)) (optional) - An HTTP Referrer url.
+  * `httpReferrer` (string | [Referrer](structures/referrer.md)) (optional) - An HTTP Referrer url.
   * `userAgent` string (optional) - A user agent originating the request.
   * `extraHeaders` string (optional) - Extra headers separated by "\n".
-  * `postData` ([UploadRawData](latest/api/structures/upload-raw-data.md) | [UploadFile](latest/api/structures/upload-file.md))[] (optional)
+  * `postData` ([UploadRawData](structures/upload-raw-data.md) | [UploadFile](structures/upload-file.md))[] (optional)
   * `baseURLForDataURL` string (optional) - Base url (with trailing path separator) for files to be loaded by the data url. This is needed only if the specified `url` is a data url and needs to load other files.
 
 Returns `Promise<void>` - the promise will resolve when the page has finished loading
-(see [`did-finish-load`](latest/api/web-contents.md#event-did-finish-load)), and rejects
+(see [`did-finish-load`](web-contents.md#event-did-finish-load)), and rejects
 if the page fails to load (see
-[`did-fail-load`](latest/api/web-contents.md#event-did-fail-load)). A noop rejection handler is already attached, which avoids unhandled rejection errors.
+[`did-fail-load`](web-contents.md#event-did-fail-load)). A noop rejection handler is already attached, which avoids unhandled rejection errors.
 
 Loads the `url` in the window. The `url` must contain the protocol prefix,
 e.g. the `http://` or `file://`. If the load should bypass http cache then
@@ -1021,13 +1059,13 @@ win.webContents.loadURL('https://github.com', options)
 
 * `filePath` string
 * `options` Object (optional)
-  * `query` Record&#60;string, string&#62; (optional) - Passed to `url.format()`.
+  * `query` Record\<string, string\> (optional) - Passed to `url.format()`.
   * `search` string (optional) - Passed to `url.format()`.
   * `hash` string (optional) - Passed to `url.format()`.
 
 Returns `Promise<void>` - the promise will resolve when the page has finished loading
-(see [`did-finish-load`](latest/api/web-contents.md#event-did-finish-load)), and rejects
-if the page fails to load (see [`did-fail-load`](latest/api/web-contents.md#event-did-fail-load)).
+(see [`did-finish-load`](web-contents.md#event-did-finish-load)), and rejects
+if the page fails to load (see [`did-fail-load`](web-contents.md#event-did-fail-load)).
 
 Loads the given file in the window, `filePath` should be a path to
 an HTML file relative to the root of your application.  For instance
@@ -1052,7 +1090,7 @@ win.loadFile('src/index.html')
 
 * `url` string
 * `options` Object (optional)
-  * `headers` Record&#60;string, string&#62; (optional) - HTTP request headers.
+  * `headers` Record\<string, string\> (optional) - HTTP request headers.
 
 Initiates a download of the resource at `url` without navigating. The
 `will-download` event of `session` will be triggered.
@@ -1127,43 +1165,107 @@ Reloads the current web page.
 
 Reloads current page and ignores cache.
 
-#### `contents.canGoBack()`
+#### `contents.canGoBack()` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 Returns `boolean` - Whether the browser can go back to previous web page.
 
-#### `contents.canGoForward()`
+**Deprecated:** Should use the new [`contents.navigationHistory.canGoBack`](navigation-history.md#navigationhistorycangoback) API.
+
+#### `contents.canGoForward()` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 Returns `boolean` - Whether the browser can go forward to next web page.
 
-#### `contents.canGoToOffset(offset)`
+**Deprecated:** Should use the new [`contents.navigationHistory.canGoForward`](navigation-history.md#navigationhistorycangoforward) API.
+
+#### `contents.canGoToOffset(offset)` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 * `offset` Integer
 
 Returns `boolean` - Whether the web page can go to `offset`.
 
-#### `contents.clearHistory()`
+**Deprecated:** Should use the new [`contents.navigationHistory.canGoToOffset`](navigation-history.md#navigationhistorycangotooffsetoffset) API.
+
+#### `contents.clearHistory()` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 Clears the navigation history.
 
-#### `contents.goBack()`
+**Deprecated:** Should use the new [`contents.navigationHistory.clear`](navigation-history.md#navigationhistoryclear) API.
+
+#### `contents.goBack()` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 Makes the browser go back a web page.
 
-#### `contents.goForward()`
+**Deprecated:** Should use the new [`contents.navigationHistory.goBack`](navigation-history.md#navigationhistorygoback) API.
+
+#### `contents.goForward()` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 Makes the browser go forward a web page.
 
-#### `contents.goToIndex(index)`
+**Deprecated:** Should use the new [`contents.navigationHistory.goForward`](navigation-history.md#navigationhistorygoforward) API.
+
+#### `contents.goToIndex(index)` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 * `index` Integer
 
 Navigates browser to the specified absolute web page index.
 
-#### `contents.goToOffset(offset)`
+**Deprecated:** Should use the new [`contents.navigationHistory.goToIndex`](navigation-history.md#navigationhistorygotoindexindex) API.
+
+#### `contents.goToOffset(offset)` _Deprecated_
+
+```YAML history
+deprecated:
+  - pr-url: https://github.com/electron/electron/pull/41752
+    breaking-changes-header: deprecated-clearhistory-cangoback-goback-cangoforward-goforward-gotoindex-cangotooffset-gotooffset-on-webcontents
+```
 
 * `offset` Integer
 
 Navigates to the specified offset from the "current entry".
+
+**Deprecated:** Should use the new [`contents.navigationHistory.goToOffset`](navigation-history.md#navigationhistorygotooffsetoffset) API.
 
 #### `contents.isCrashed()`
 
@@ -1273,7 +1375,7 @@ win.webContents.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/u
 #### `contents.executeJavaScriptInIsolatedWorld(worldId, scripts[, userGesture])`
 
 * `worldId` Integer - The ID of the world to run the javascript in, `0` is the default world, `999` is the world used by Electron's `contextIsolation` feature.  You can provide any integer here.
-* `scripts` [WebSource[]](latest/api/structures/web-source.md)
+* `scripts` [WebSource[]](structures/web-source.md)
 * `userGesture` boolean (optional) - Default is `false`.
 
 Returns `Promise<any>` - A promise that resolves with the result of the executed code
@@ -1289,26 +1391,23 @@ Ignore application menu shortcuts while this web contents is focused.
 
 #### `contents.setWindowOpenHandler(handler)`
 
-* `handler` Function&#60;{action: 'deny'} | {action: 'allow', outlivesOpener?: boolean, overrideBrowserWindowOptions?: BrowserWindowConstructorOptions}&#62;
+* `handler` Function\<[WindowOpenHandlerResponse](structures/window-open-handler-response.md)\>
   * `details` Object
     * `url` string - The _resolved_ version of the URL passed to `window.open()`. e.g. opening a window with `window.open('foo')` will yield something like `https://the-origin/the/current/path/foo`.
     * `frameName` string - Name of the window provided in `window.open()`
     * `features` string - Comma separated list of window features provided to `window.open()`.
     * `disposition` string - Can be `default`, `foreground-tab`, `background-tab`,
       `new-window` or `other`.
-    * `referrer` [Referrer](latest/api/structures/referrer.md) - The referrer that will be
+    * `referrer` [Referrer](structures/referrer.md) - The referrer that will be
       passed to the new window. May or may not result in the `Referer` header being
       sent, depending on the referrer policy.
-    * `postBody` [PostBody](latest/api/structures/post-body.md) (optional) - The post data that
+    * `postBody` [PostBody](structures/post-body.md) (optional) - The post data that
       will be sent to the new window, along with the appropriate headers that will
       be set. If no post data is to be sent, the value will be `null`. Only defined
       when the window is being created by a form that set `target=_blank`.
 
-  Returns `{action: 'deny'} | {action: 'allow', outlivesOpener?: boolean, overrideBrowserWindowOptions?: BrowserWindowConstructorOptions}` - `deny` cancels the creation of the new
-  window. `allow` will allow the new window to be created. Specifying `overrideBrowserWindowOptions` allows customization of the created window.
-  By default, child windows are closed when their opener is closed. This can be
-  changed by specifying `outlivesOpener: true`, in which case the opened window
-  will not be closed when its opener is closed.
+  Returns `WindowOpenHandlerResponse` - When set to `{ action: 'deny' }` cancels the creation of the new
+  window. `{ action: 'allow' }` will allow the new window to be created.
   Returning an unrecognized value such as a null, undefined, or an object
   without a recognized 'action' value will result in a console error and have
   the same effect as returning `{action: 'deny'}`.
@@ -1316,8 +1415,28 @@ Ignore application menu shortcuts while this web contents is focused.
 Called before creating a window a new window is requested by the renderer, e.g.
 by `window.open()`, a link with `target="_blank"`, shift+clicking on a link, or
 submitting a form with `<form target="_blank">`. See
-[`window.open()`](latest/api/window-open.md) for more details and how to use this in
+[`window.open()`](window-open.md) for more details and how to use this in
 conjunction with `did-create-window`.
+
+An example showing how to customize the process of new `BrowserWindow` creation to be `BrowserView` attached to main window instead:
+
+```js
+const { BrowserView, BrowserWindow } = require('electron')
+
+const mainWindow = new BrowserWindow()
+
+mainWindow.webContents.setWindowOpenHandler((details) => {
+  return {
+    action: 'allow',
+    createWindow: (options) => {
+      const browserView = new BrowserView(options)
+      mainWindow.addBrowserView(browserView)
+      browserView.setBounds({ x: 0, y: 0, width: 640, height: 480 })
+      return browserView.webContents
+    }
+  }
+})
+```
 
 #### `contents.setAudioMuted(muted)`
 
@@ -1498,7 +1617,7 @@ Inserts `text` to the focused element.
 Returns `Integer` - The request id used for the request.
 
 Starts a request to find all matches for the `text` in the web page. The result of the request
-can be obtained by subscribing to [`found-in-page`](latest/api/web-contents.md#event-found-in-page) event.
+can be obtained by subscribing to [`found-in-page`](web-contents.md#event-found-in-page) event.
 
 #### `contents.stopFindInPage(action)`
 
@@ -1522,12 +1641,12 @@ console.log(requestId)
 
 #### `contents.capturePage([rect, opts])`
 
-* `rect` [Rectangle](latest/api/structures/rectangle.md) (optional) - The area of the page to be captured.
+* `rect` [Rectangle](structures/rectangle.md) (optional) - The area of the page to be captured.
 * `opts` Object (optional)
   * `stayHidden` boolean (optional) -  Keep the page hidden instead of visible. Default is `false`.
   * `stayAwake` boolean (optional) -  Keep the system awake instead of allowing it to sleep. Default is `false`.
 
-Returns `Promise<NativeImage>` - Resolves with a [NativeImage](latest/api/native-image.md)
+Returns `Promise<NativeImage>` - Resolves with a [NativeImage](native-image.md)
 
 Captures a snapshot of the page within `rect`. Omitting `rect` will capture the whole visible page.
 The page is considered visible when its browser window is hidden and the capturer count is non-zero.
@@ -1536,13 +1655,13 @@ If you would like the page to stay hidden, you should ensure that `stayHidden` i
 #### `contents.isBeingCaptured()`
 
 Returns `boolean` - Whether this page is being captured. It returns true when the capturer count
-is large then 0.
+is greater than 0.
 
 #### `contents.getPrintersAsync()`
 
 Get the system printer list.
 
-Returns `Promise<PrinterInfo[]>` - Resolves with a [`PrinterInfo[]`](latest/api/structures/printer-info.md)
+Returns `Promise<PrinterInfo[]>` - Resolves with a [`PrinterInfo[]`](structures/printer-info.md)
 
 #### `contents.print([options], [callback])`
 
@@ -1567,7 +1686,7 @@ Returns `Promise<PrinterInfo[]>` - Resolves with a [`PrinterInfo[]`](latest/api/
     * `from` number - Index of the first page to print (0-based).
     * `to` number - Index of the last page to print (inclusive) (0-based).
   * `duplexMode` string (optional) - Set the duplex mode of the printed web page. Can be `simplex`, `shortEdge`, or `longEdge`.
-  * `dpi` Record&#60;string, number&#62; (optional)
+  * `dpi` Record\<string, number\> (optional)
     * `horizontal` number (optional) - The horizontal dpi.
     * `vertical` number (optional) - The vertical dpi.
   * `header` string (optional) - string to be printed as page header.
@@ -1608,7 +1727,7 @@ win.webContents.print(options, (success, errorType) => {
   * `landscape` boolean (optional) - Paper orientation.`true` for landscape, `false` for portrait. Defaults to false.
   * `displayHeaderFooter` boolean (optional) - Whether to display header and footer. Defaults to false.
   * `printBackground` boolean (optional) - Whether to print background graphics. Defaults to false.
-  * `scale` number(optional) - Scale of the webpage rendering. Defaults to 1.
+  * `scale` number(optional)  - Scale of the webpage rendering. Defaults to 1.
   * `pageSize` string | Size (optional) - Specify page size of the generated PDF. Can be `A0`, `A1`, `A2`, `A3`,
   `A4`, `A5`, `A6`, `Legal`, `Letter`, `Tabloid`, `Ledger`, or an Object containing `height` and `width` in inches. Defaults to `Letter`.
   * `margins` Object (optional)
@@ -1822,7 +1941,7 @@ Inspects the shared worker based on its ID.
 
 #### `contents.getAllSharedWorkers()`
 
-Returns [`SharedWorkerInfo[]`](latest/api/structures/shared-worker-info.md) - Information about all Shared Workers.
+Returns [`SharedWorkerInfo[]`](structures/shared-worker-info.md) - Information about all Shared Workers.
 
 #### `contents.inspectServiceWorker()`
 
@@ -1834,8 +1953,8 @@ Opens the developer tools for the service worker context.
 * `...args` any[]
 
 Send an asynchronous message to the renderer process via `channel`, along with
-arguments. Arguments will be serialized with the [Structured Clone
-Algorithm][SCA], just like [`postMessage`][], so prototype chains will not be
+arguments. Arguments will be serialized with the [Structured Clone Algorithm][SCA],
+just like [`postMessage`][], so prototype chains will not be
 included. Sending Functions, Promises, Symbols, WeakMaps, or WeakSets will
 throw an exception.
 
@@ -1846,7 +1965,7 @@ special Electron objects will throw an exception.
 
 :::
 
-For additional reading, refer to [Electron's IPC guide](latest/tutorial/ipc.md).
+For additional reading, refer to [Electron's IPC guide](../tutorial/ipc.md).
 
 #### `contents.sendToFrame(frameId, channel, ...args)`
 
@@ -1866,7 +1985,7 @@ WeakSets will throw an exception.
 > special Electron objects will throw an exception.
 
 The renderer process can handle the message by listening to `channel` with the
-[`ipcRenderer`](latest/api/ipc-renderer.md) module.
+[`ipcRenderer`](ipc-renderer.md) module.
 
 If you want to get the `frameId` of a given renderer context you should use
 the `webFrame.routingId` value.  E.g.
@@ -1920,12 +2039,12 @@ ipcRenderer.on('port', (e, msg) => {
       (default: `desktop`):
     * `desktop` - Desktop screen type.
     * `mobile` - Mobile screen type.
-  * `screenSize` [Size](latest/api/structures/size.md) - Set the emulated screen size (screenPosition == mobile).
-  * `viewPosition` [Point](latest/api/structures/point.md) - Position the view on the screen
+  * `screenSize` [Size](structures/size.md) - Set the emulated screen size (screenPosition == mobile).
+  * `viewPosition` [Point](structures/point.md) - Position the view on the screen
       (screenPosition == mobile) (default: `{ x: 0, y: 0 }`).
   * `deviceScaleFactor` Integer - Set the device scale factor (if zero defaults to
       original device scale factor) (default: `0`).
-  * `viewSize` [Size](latest/api/structures/size.md) - Set the emulated view size (empty means no override)
+  * `viewSize` [Size](structures/size.md) - Set the emulated view size (empty means no override)
   * `scale` Float - Scale of emulated view inside available space (not in fit to
       view mode) (default: `1`).
 
@@ -1937,24 +2056,24 @@ Disable device emulation enabled by `webContents.enableDeviceEmulation`.
 
 #### `contents.sendInputEvent(inputEvent)`
 
-* `inputEvent` [MouseInputEvent](latest/api/structures/mouse-input-event.md) | [MouseWheelInputEvent](latest/api/structures/mouse-wheel-input-event.md) | [KeyboardInputEvent](latest/api/structures/keyboard-input-event.md)
+* `inputEvent` [MouseInputEvent](structures/mouse-input-event.md) | [MouseWheelInputEvent](structures/mouse-wheel-input-event.md) | [KeyboardInputEvent](structures/keyboard-input-event.md)
 
 Sends an input `event` to the page.
-**Note:** The [`BrowserWindow`](latest/api/browser-window.md) containing the contents needs to be focused for
+**Note:** The [`BrowserWindow`](browser-window.md) containing the contents needs to be focused for
 `sendInputEvent()` to work.
 
 #### `contents.beginFrameSubscription([onlyDirty ,]callback)`
 
 * `onlyDirty` boolean (optional) - Defaults to `false`.
 * `callback` Function
-  * `image` [NativeImage](latest/api/native-image.md)
-  * `dirtyRect` [Rectangle](latest/api/structures/rectangle.md)
+  * `image` [NativeImage](native-image.md)
+  * `dirtyRect` [Rectangle](structures/rectangle.md)
 
 Begin subscribing for presentation events and captured frames, the `callback`
 will be called with `callback(image, dirtyRect)` when there is a presentation
 event.
 
-The `image` is an instance of [NativeImage](latest/api/native-image.md) that stores the
+The `image` is an instance of [NativeImage](native-image.md) that stores the
 captured frame.
 
 The `dirtyRect` is an object with `x, y, width, height` properties that
@@ -1971,7 +2090,7 @@ End subscribing for frame presentation events.
 * `item` Object
   * `file` string - The path to the file being dragged.
   * `files` string[] (optional) - The paths to the files being dragged. (`files` will override `file` field)
-  * `icon` [NativeImage](latest/api/native-image.md) | string - The image must be
+  * `icon` [NativeImage](native-image.md) | string - The image must be
     non-empty on macOS.
 
 Sets the `item` as dragging item for current drag-drop operation, `file` is the
@@ -2118,6 +2237,13 @@ when the page becomes backgrounded. This also affects the Page Visibility API.
 
 #### `contents.setBackgroundThrottling(allowed)`
 
+```YAML history
+changes:
+  - pr-url: https://github.com/electron/electron/pull/38924
+    description: "`WebContents.backgroundThrottling` set to false affects all `WebContents` in the host `BrowserWindow`"
+    breaking-changes-header: behavior-changed-webcontentsbackgroundthrottling-set-to-false-affects-all-webcontents-in-the-host-browserwindow
+```
+
 * `allowed` boolean
 
 Controls whether or not this WebContents will throttle animations and timers
@@ -2145,7 +2271,7 @@ This corresponds to the [animationPolicy][] accessibility feature in Chromium.
 
 #### `contents.ipc` _Readonly_
 
-An [`IpcMain`](latest/api/ipc-main.md) scoped to just IPC messages sent from this
+An [`IpcMain`](ipc-main.md) scoped to just IPC messages sent from this
 WebContents.
 
 IPC messages sent with `ipcRenderer.send`, `ipcRenderer.sendSync` or
@@ -2170,7 +2296,7 @@ option is enabled, it is possible for child frames to send IPC messages also.
 In that case, handlers should check the `senderFrame` property of the IPC event
 to ensure that the message is coming from the expected frame. Alternatively,
 register handlers on the appropriate frame directly using the
-[`WebFrameMain.ipc`](latest/api/web-frame-main.md#frameipc-readonly) interface.
+[`WebFrameMain.ipc`](web-frame-main.md#frameipc-readonly) interface.
 
 #### `contents.audioMuted`
 
@@ -2205,11 +2331,15 @@ A `Integer` representing the unique ID of this WebContents. Each ID is unique am
 
 #### `contents.session` _Readonly_
 
-A [`Session`](latest/api/session.md) used by this webContents.
+A [`Session`](session.md) used by this webContents.
+
+#### `contents.navigationHistory` _Readonly_
+
+A [`NavigationHistory`](navigation-history.md) used by this webContents.
 
 #### `contents.hostWebContents` _Readonly_
 
-A [`WebContents`](latest/api/web-contents.md) instance that might own this `WebContents`.
+A [`WebContents`](web-contents.md) instance that might own this `WebContents`.
 
 #### `contents.devToolsWebContents` _Readonly_
 
@@ -2220,24 +2350,31 @@ when the DevTools has been closed.
 
 #### `contents.debugger` _Readonly_
 
-A [`Debugger`](latest/api/debugger.md) instance for this webContents.
+A [`Debugger`](debugger.md) instance for this webContents.
 
 #### `contents.backgroundThrottling`
+
+```YAML history
+changes:
+  - pr-url: https://github.com/electron/electron/pull/38924
+    description: "`WebContents.backgroundThrottling` set to false affects all `WebContents` in the host `BrowserWindow`"
+    breaking-changes-header: behavior-changed-webcontentsbackgroundthrottling-set-to-false-affects-all-webcontents-in-the-host-browserwindow
+```
 
 A `boolean` property that determines whether or not this WebContents will throttle animations and timers
 when the page becomes backgrounded. This also affects the Page Visibility API.
 
 #### `contents.mainFrame` _Readonly_
 
-A [`WebFrameMain`](latest/api/web-frame-main.md) property that represents the top frame of the page's frame hierarchy.
+A [`WebFrameMain`](web-frame-main.md) property that represents the top frame of the page's frame hierarchy.
 
 #### `contents.opener` _Readonly_
 
-A [`WebFrameMain`](latest/api/web-frame-main.md) property that represents the frame that opened this WebContents, either
+A [`WebFrameMain`](web-frame-main.md) property that represents the frame that opened this WebContents, either
 with open(), or by navigating a link with a target attribute.
 
 [keyboardevent]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
 [event-emitter]: https://nodejs.org/api/events.html#events_class_eventemitter
 [SCA]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
 [`postMessage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
-[`MessagePortMain`]: latest/api/message-port-main.md
+[`MessagePortMain`]: message-port-main.md

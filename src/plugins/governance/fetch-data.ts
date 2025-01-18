@@ -1,7 +1,6 @@
-import got from 'got';
-import remark from 'remark';
+import { remark } from 'remark';
 import gfm from 'remark-gfm';
-import toString from 'mdast-util-to-string';
+import { toString } from 'mdast-util-to-string';
 import { Node, Parent } from 'unist';
 import { Table, Link } from 'mdast';
 
@@ -71,7 +70,7 @@ async function getWGInfo(workingGroup: string): Promise<WorkingGroup> {
 
       const member = row.children[1].children[1].url.replace(
         'https://github.com/',
-        ''
+        '',
       );
       const status = toString(row.children[2].children[0]);
 
@@ -82,7 +81,7 @@ async function getWGInfo(workingGroup: string): Promise<WorkingGroup> {
       }
       return acc;
     },
-    { chair: undefined, members: [] }
+    { chair: undefined, members: [] },
   );
 
   const { chair, members } = wgMembers;
@@ -95,10 +94,10 @@ async function getWGInfo(workingGroup: string): Promise<WorkingGroup> {
  * README file in the `electron/governance` repo.
  */
 async function getGitHubREADME(wg: string) {
-  const res = await got(
-    `https://raw.githubusercontent.com/electron/governance/main/wg-${wg}/README.md`
+  const res = await fetch(
+    `https://raw.githubusercontent.com/electron/governance/main/wg-${wg}/README.md`,
   );
-  return res.body;
+  return res.text();
 }
 
 export { fetchData };

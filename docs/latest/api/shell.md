@@ -9,7 +9,7 @@ hide_title: false
 
 > Manage files and URLs using their default applications.
 
-Process: [Main](latest/glossary.md#main-process), [Renderer](latest/glossary.md#renderer-process) (non-sandboxed only)
+Process: [Main](../glossary.md#main-process), [Renderer](../glossary.md#renderer-process) (non-sandboxed only)
 
 The `shell` module provides functions related to desktop integration.
 
@@ -43,7 +43,7 @@ Open the given file in the desktop's default manner.
 
 ### `shell.openExternal(url[, options])`
 
-* `url` string - Max 2081 characters on windows.
+* `url` string - Max 2081 characters on Windows.
 * `options` Object (optional)
   * `activate` boolean (optional) _macOS_ - `true` to bring the opened application to the foreground. The default is `true`.
   * `workingDirectory` string (optional) _Windows_ - The working directory.
@@ -76,7 +76,7 @@ Play the beep sound.
   * `update` - Updates specified properties only on an existing shortcut.
   * `replace` - Overwrites an existing shortcut, fails if the shortcut doesn't
     exist.
-* `options` [ShortcutDetails](latest/api/structures/shortcut-details.md)
+* `options` [ShortcutDetails](structures/shortcut-details.md)
 
 Returns `boolean` - Whether the shortcut was created successfully.
 
@@ -86,7 +86,7 @@ Creates or updates a shortcut link at `shortcutPath`.
 
 * `shortcutPath` string
 
-Returns [`ShortcutDetails`](latest/api/structures/shortcut-details.md)
+Returns [`ShortcutDetails`](structures/shortcut-details.md)
 
 Resolves the shortcut link at `shortcutPath`.
 

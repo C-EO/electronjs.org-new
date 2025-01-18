@@ -1,11 +1,9 @@
 ---
 title: Electron 2.0.0
 date: 2018-05-02T00:00:00.000Z
-authors:
-  name: ckerr
-  url: 'https://github.com/ckerr'
-  image_url: 'https://github.com/ckerr.png?size=96'
+authors: ckerr
 slug: electron-2-0
+tags: [release]
 ---
 
 After more than four months of development, eight beta releases, and worldwide

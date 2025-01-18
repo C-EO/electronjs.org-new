@@ -1,11 +1,9 @@
 ---
 title: Electron becomes an OpenJS Foundation Impact Project
 date: 2020-06-23T00:00:00.000Z
-authors:
-  - name: VerteDinde
-    url: 'https://github.com/VerteDinde'
-    image_url: 'https://github.com/VerteDinde.png?size=96'
+authors: VerteDinde
 slug: electron-openjs-impact-project
+tags: [news]
 ---
 
 At [OpenJS World](https://events.linuxfoundation.org/openjs-world/) this morning, we announced that Electron has officially graduated from the [OpenJS Foundation's](https://openjsf.org/) incubation program, and is now an OpenJS Foundation Impact Project.

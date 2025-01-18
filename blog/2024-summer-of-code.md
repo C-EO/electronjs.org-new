@@ -2,16 +2,11 @@
 title: Google Summer of Code 2024
 date: 2024-02-23T00:00:00.000Z
 authors:
-  - name: erickzhao
-    url: 'https://github.com/erickzhao'
-    image_url: 'https://github.com/erickzhao.png?size=96'
-  - name: VerteDinde
-    url: 'https://github.com/VerteDinde'
-    image_url: 'https://github.com/VerteDinde.png?size=96'
-  - name: dsanders11
-    url: 'https://github.com/dsanders11'
-    image_url: 'https://github.com/dsanders11.png?size=96'
+  - erickzhao
+  - VerteDinde
+  - dsanders11
 slug: 2024-summer-of-code
+tags: [community]
 ---
 
 We are excited to announce that Electron has been accepted as a mentoring organization for

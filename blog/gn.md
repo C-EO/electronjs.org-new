@@ -1,11 +1,9 @@
 ---
 title: Using GN to Build Electron
 date: 2018-09-05T00:00:00.000Z
-authors:
-  name: nornagon
-  url: 'https://github.com/nornagon'
-  image_url: 'https://github.com/nornagon.png?size=96'
+authors: nornagon
 slug: gn
+tags: [news]
 ---
 
 Electron now uses GN to build itself. Here's a discussion of why.
